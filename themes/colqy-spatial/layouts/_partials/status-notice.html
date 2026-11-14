@@ -1,0 +1,9 @@
+{{ $shared := site.Data.shared_statuses | default dict }}
+{{ $legacyShared := site.Data.statuses.shared | default dict }}
+{{ range .Params.statuses | default (slice) }}
+  {{ with .shared }}
+    {{ $key := . }}
+    {{ with index $shared $key }}{{ partial "status-item.html" . }}
+    {{ else }}{{ with index $legacyShared $key }}{{ partial "status-item.html" . }}{{ else }}{{ warnf "Unknown shared status: %s" $key }}{{ end }}{{ end }}
+  {{ else }}{{ partial "status-item.html" . }}{{ end }}
+{{ end }}

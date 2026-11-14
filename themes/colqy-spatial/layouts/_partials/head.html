@@ -1,0 +1,14 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+{{ with .Description }}<meta name="description" content="{{ . }}">{{ else }}{{ with site.Params.introduction }}<meta name="description" content="{{ . }}">{{ end }}{{ end }}
+<link rel="stylesheet" href="{{ "css/spatial.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/blocks.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/status.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/lightbox.css" | relURL }}">
+<script src="{{ "js/spatial.js" | relURL }}" defer></script>
+<script src="{{ "js/lightbox.js" | relURL }}" defer></script>
+<link rel="stylesheet" href="{{ "css/citations.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/supporting-rhythm.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/release-refinements.css" | relURL }}">

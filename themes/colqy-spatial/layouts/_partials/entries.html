@@ -1,0 +1,42 @@
+{{- $view := .view | default "list" -}}
+{{- /* Older Indexes with gallery use Grid without changing their data. */ -}}
+{{- if eq $view "gallery" -}}{{- $view = "grid" -}}{{- end -}}
+{{- $pages := .pages | default (slice) -}}
+{{- if eq $view "timeline" -}}
+  {{- $dated := slice -}}
+  {{- $undated := slice -}}
+  {{- range $pages -}}
+    {{- if .Params.date -}}
+      {{- $dated = append . $dated -}}
+    {{- else -}}
+      {{- $undated = append . $undated -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $dated = sort $dated "Date" "desc" -}}
+  <div class="cq-timeline" aria-label="Chronological index">
+    {{- $lastYear := "" -}}
+    {{- range $dated -}}
+      {{- $year := .Date.Format "2006" -}}
+      {{- if ne $year $lastYear -}}
+        {{- $lastYear = $year -}}
+        <h3 class="cq-timeline-year">{{ $year }}</h3>
+      {{- end -}}
+      {{- partial "index-entry.html" (dict "page" . "view" "timeline") -}}
+    {{- end -}}
+    {{- with $undated -}}
+      <h3 class="cq-timeline-year">Undated</h3>
+      {{- range (sort . "Title" "asc") -}}
+        {{- partial "index-entry.html" (dict "page" . "view" "timeline") -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if eq (len $pages) 0 -}}<p class="cq-empty">No entries yet.</p>{{- end -}}
+  </div>
+{{- else -}}
+  <div class="cq-entries" data-view="{{ $view }}">
+    {{- range $pages -}}
+      {{- partial "index-entry.html" (dict "page" . "view" $view) -}}
+    {{- else -}}
+      <p class="cq-empty">No entries yet.</p>
+    {{- end -}}
+  </div>
+{{- end -}}

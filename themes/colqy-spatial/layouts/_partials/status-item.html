@@ -1,0 +1,8 @@
+{{ $heading := .heading | default "Status" }}
+{{ $value := .value | default "" }}
+{{ $note := .note | default "" }}
+{{ if or $value $note }}
+<div class="cq-status" data-appearance="{{ .appearance | default "neutral" }}">
+  <strong>{{ $heading }}</strong>{{ with $value }}<span>{{ . }}</span>{{ end }}{{ with $note }}<small>{{ . }}</small>{{ end }}
+</div>
+{{ end }}

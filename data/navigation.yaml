@@ -1,0 +1,17 @@
+# Curated primary navigation; edit in Sveltia.
+main:
+- label: Home
+  url: /
+  enabled: true
+- label: Practice
+  url: /practice/
+  enabled: true
+- label: Research
+  url: /research/
+  enabled: true
+- label: Journal
+  url: /journal/
+  enabled: true
+- label: About
+  url: /about/
+  enabled: true

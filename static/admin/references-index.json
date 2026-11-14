@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source_sha256": "3d623c2c26f847d4953fe2e025c6f70be566d904e12b0db5948ceebb0dbe1529",
+  "entries": [
+    {
+      "id": "colqyAster2026",
+      "title": "Making Systems Visible (fictional demonstration)",
+      "type": "article-journal",
+      "author": [
+        {
+          "family": "Aster",
+          "given": "Jules"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2026
+          ]
+        ]
+      }
+    },
+    {
+      "id": "colqyElian2024",
+      "title": "Material Interactions: A Practice Reader (fictional demonstration)",
+      "type": "book",
+      "author": [
+        {
+          "family": "Elian",
+          "given": "Noor"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2024
+          ]
+        ]
+      }
+    },
+    {
+      "id": "colqyVale2025",
+      "title": "Situated Evidence and Creative Inquiry (fictional demonstration)",
+      "type": "article-journal",
+      "author": [
+        {
+          "family": "Vale",
+          "given": "Mira"
+        }
+      ],
+      "issued": {
+        "date-parts": [
+          [
+            2025
+          ]
+        ]
+      }
+    }
+  ]
+}

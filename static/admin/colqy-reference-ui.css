@@ -1,0 +1,194 @@
+/* Colqy A6.4a.1 — References UI. Flat editorial controls; inherit Sveltia's theme. */
+/* Never set global body, button, input or label rules: this stylesheet is scoped. */
+.cq-bibtex {
+  --cq-ref-rule: color-mix(in srgb, currentColor 30%, transparent);
+  --cq-ref-soft-rule: color-mix(in srgb, currentColor 17%, transparent);
+  --cq-ref-tint: color-mix(in srgb, currentColor 6%, transparent);
+  --cq-ref-hover: color-mix(in srgb, currentColor 11%, transparent);
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  color: inherit;
+  background: transparent;
+  font: 14px/1.45 system-ui, sans-serif;
+}
+.cq-bibtex :is(label, strong, summary) { color: inherit; }
+.cq-bibtex label { font-size: 12px; font-weight: 600; }
+.cq-bibtex :is(textarea, input, select) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--cq-ref-rule);
+  border-radius: 0;
+  background: var(--cq-ref-tint);
+  color: inherit;
+  font: inherit;
+}
+.cq-bibtex :is(textarea, input)::placeholder {
+  color: inherit;
+  opacity: .62;
+}
+.cq-bibtex select { color-scheme: inherit; }
+.cq-bibtex select option { background: Canvas; color: CanvasText; }
+.cq-bibtex textarea {
+  min-height: 144px;
+  resize: vertical;
+  font: 12px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.cq-bibtex button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--cq-ref-rule);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.cq-bibtex button:hover:not(:disabled) { background: var(--cq-ref-hover); }
+.cq-bibtex button[data-primary] {
+  border: 2px solid currentColor;
+  font-weight: 650;
+  background: var(--cq-ref-tint);
+}
+.cq-bibtex button:disabled { opacity: .48; cursor: not-allowed; }
+.cq-bibtex :is(button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.cq-bibtex-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.cq-bibtex-list {
+  max-height: 240px;
+  overflow: auto;
+  border-top: 1px solid var(--cq-ref-rule);
+  border-bottom: 1px solid var(--cq-ref-rule);
+}
+.cq-bibtex-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--cq-ref-soft-rule);
+}
+.cq-bibtex-item:last-child { border-bottom: 0; }
+.cq-bibtex-item-main { min-width: 0; overflow-wrap: anywhere; }
+.cq-bibtex-small { margin: 0; font-size: 12px; color: inherit; opacity: .78; }
+.cq-bibtex-errors {
+  padding: 10px;
+  border: 1px solid var(--cq-ref-rule);
+  border-left: 3px solid currentColor;
+  background: var(--cq-ref-tint);
+  color: inherit;
+}
+.cq-bibtex-details { padding-top: 9px; border-top: 1px solid var(--cq-ref-rule); }
+.cq-bibtex-details summary { cursor: pointer; font-size: 12px; font-weight: 600; }
+.cq-ref-manual {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--cq-ref-rule);
+  background: var(--cq-ref-tint);
+}
+.cq-ref-manual-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cq-ref-manual-field { display: grid; gap: 4px; min-width: 0; }
+.cq-ref-manual-field label { font-size: 12px; font-weight: 600; }
+.cq-ref-manual textarea { min-height: 70px; }
+.cq-bibtex-item-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.cq-bibtex-item-actions button { padding: 5px 8px; font-size: 12px; min-height: 32px; }
+.cq-ref-warning {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 8px 10px;
+  border-left: 3px solid currentColor;
+  background: var(--cq-ref-tint);
+  color: inherit;
+  font-size: 12px;
+}
+
+/* The citation picker is a native dialog attached to document.body. System colours
+   respond to the document's colour-scheme; explicit CMS theme selectors cover
+   common Sveltia theme implementations without touching unrelated dialogs. */
+.cq-ref-dialog {
+  color-scheme: inherit;
+  --cq-ref-rule: color-mix(in srgb, currentColor 32%, transparent);
+  --cq-ref-soft-rule: color-mix(in srgb, currentColor 17%, transparent);
+  --cq-ref-tint: color-mix(in srgb, currentColor 6%, transparent);
+  --cq-ref-hover: color-mix(in srgb, currentColor 11%, transparent);
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(78dvh, 680px);
+  padding: 0;
+  border: 1px solid var(--cq-ref-rule);
+  border-radius: 0;
+  box-shadow: none;
+  background: Canvas;
+  color: CanvasText;
+  font: 14px/1.45 system-ui, sans-serif;
+}
+:root:is(.dark, [data-theme="dark"], [data-color-mode="dark"]) .cq-ref-dialog,
+body:is(.dark, [data-theme="dark"], [data-color-mode="dark"]) .cq-ref-dialog,
+:root:has([data-theme="dark"]) .cq-ref-dialog { color-scheme: dark; }
+:root:is(.light, [data-theme="light"], [data-color-mode="light"]) .cq-ref-dialog,
+body:is(.light, [data-theme="light"], [data-color-mode="light"]) .cq-ref-dialog,
+:root:has([data-theme="light"]) .cq-ref-dialog { color-scheme: light; }
+.cq-ref-dialog::backdrop { background: rgb(0 0 0 / 58%); }
+.cq-ref-wrap { display: grid; gap: 12px; padding: 16px; }
+.cq-ref-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.cq-ref-title { margin: 0; font-size: 16px; font-weight: 650; }
+.cq-ref-note { margin: 0; font-size: 12px; color: inherit; opacity: .78; }
+.cq-ref-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--cq-ref-rule);
+  border-radius: 0;
+  background: var(--cq-ref-tint);
+  color: inherit;
+  font: inherit;
+}
+.cq-ref-search::placeholder { color: inherit; opacity: .62; }
+.cq-ref-results {
+  max-height: 38dvh;
+  overflow: auto;
+  border-top: 1px solid var(--cq-ref-rule);
+  border-bottom: 1px solid var(--cq-ref-rule);
+}
+.cq-ref-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--cq-ref-soft-rule);
+  cursor: pointer;
+}
+.cq-ref-row:hover { background: var(--cq-ref-hover); }
+.cq-ref-row:last-child { border-bottom: 0; }
+.cq-ref-row input { margin-top: 4px; accent-color: currentColor; }
+.cq-ref-meta { display: block; overflow-wrap: anywhere; font-size: 12px; color: inherit; opacity: .78; }
+.cq-ref-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.cq-ref-actions button {
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--cq-ref-rule);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.cq-ref-actions button:hover:not(:disabled) { background: var(--cq-ref-hover); }
+.cq-ref-actions button[data-primary] { border: 2px solid currentColor; background: var(--cq-ref-tint); font-weight: 650; }
+.cq-ref-actions button:disabled { opacity: .48; cursor: not-allowed; }
+.cq-ref-dialog :is(button, input):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (max-width: 550px) {
+  .cq-ref-manual-grid { grid-template-columns: 1fr; }
+  .cq-ref-wrap { padding: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cq-bibtex *, .cq-ref-dialog * { transition: none !important; animation: none !important; }
+}

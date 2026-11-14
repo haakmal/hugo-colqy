@@ -1,0 +1,8 @@
+{{ $src := .Get "src" | default "" }}
+{{ $title := .Get "title" | default "" }}
+{{ if not (hasPrefix $src "https://") }}{{ errorf "embed requires an https:// URL: %s" .Position }}{{ end }}
+{{ if not $title }}{{ errorf "embed requires a descriptive title: %s" .Position }}{{ end }}
+<figure class="cq-embed">
+  <iframe src="{{ $src | safeURL }}" title="{{ $title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation" allow="fullscreen" allowfullscreen></iframe>
+  {{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

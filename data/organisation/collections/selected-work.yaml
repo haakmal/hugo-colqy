@@ -1,0 +1,5 @@
+id: selected-work
+title: "Selected Work"
+description: ""
+default_view: index
+order: 100

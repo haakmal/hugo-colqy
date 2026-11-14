@@ -1,0 +1,12 @@
+# Override by creating data/theme.yaml in the site root.
+skin: default
+shell:
+  controls: right           # right | left
+  header_sticky: false
+  left_percent: 56          # visual ratio; Right never expands into Left
+  right_percent: 44
+mobile:
+  breakpoint: 800
+  supporting: panel        # panel | inline; source defaults may override
+motion:
+  enabled: true

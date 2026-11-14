@@ -1,0 +1,80 @@
+/* Colqy A6.4c.2 — spatial drawer and Markdown callout refinements.
+   Scoped overrides; existing region sizes and source layout remain unchanged. */
+
+/* The close control occupies a non-scrolling header, never a content overlay. */
+.cq-panel { min-height:0; }
+.cq-panel-head {
+  flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end;
+  min-height:48px; padding:8px 12px 4px; box-sizing:border-box;
+  background:var(--paper,#fff);
+}
+.cq-panel .cq-close {
+  position:static; width:32px; height:32px; flex:none;
+  display:grid; place-items:center; padding:6px;
+  border:0; background:transparent; color:var(--ink,#151515);
+  cursor:pointer;
+}
+.cq-panel .cq-close svg { display:block; width:16px; height:16px; }
+.cq-panel .cq-close:hover { background:var(--soft,#f5f5f5); }
+.cq-panel .cq-close:focus-visible { outline:2px solid currentColor; outline-offset:2px; }
+.cq-panel .cq-panel-body {
+  flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden;
+  padding:4px 18px 18px; scrollbar-gutter:stable;
+}
+/* Large text links; the panel itself, not the links, supplies the border. */
+.cq-panel .cq-nav-links { display:grid; gap:2px; }
+.cq-panel .cq-nav-links a,
+.cq-panel .cq-nav-links a:last-child {
+  display:block; border:0; padding:10px 10px; margin:0;
+  font-family:var(--font-sans,system-ui,sans-serif);
+  font-size:clamp(19px,2vw,23px); line-height:1.2;
+  font-weight:450; letter-spacing:-.025em; text-decoration:none;
+  background:transparent; color:var(--ink,#151515);
+}
+.cq-panel .cq-nav-links a:hover { background:var(--soft,#f5f5f5); }
+.cq-panel .cq-nav-links a[aria-current="page"] { font-weight:700; }
+.cq-panel .cq-nav-links a:focus-visible { outline:2px solid currentColor; outline-offset:-2px; }
+
+/* Lightbox uses the same inset cross control as drawers. */
+.cq-lightbox .cq-lightbox__toolbar [data-close] {
+  width:32px; height:32px; min-height:32px; padding:6px;
+  display:grid; place-items:center; flex:none;
+  border:0; background:transparent; color:#151515;
+}
+.cq-lightbox .cq-lightbox__toolbar [data-close]:hover { background:#f1f1f1; }
+.cq-lightbox .cq-lightbox__toolbar [data-close] svg { width:16px; height:16px; display:block; }
+
+/* Portable GitHub-style Markdown alerts. Callouts are not CMS statuses. */
+.cq-callout {
+  --cq-callout-accent:#555; --cq-callout-tint:#f5f5f5;
+  display:block; box-sizing:border-box; margin:18px 0; padding:12px 15px;
+  border:0; border-left:3px solid var(--cq-callout-accent);
+  background:var(--cq-callout-tint); color:var(--ink,#151515);
+  font-size:inherit; line-height:inherit;
+}
+.cq-callout--note { --cq-callout-accent:#666; --cq-callout-tint:#f4f4f4; }
+.cq-callout--tip { --cq-callout-accent:#397d55; --cq-callout-tint:#edf5ee; }
+.cq-callout--important { --cq-callout-accent:#444; --cq-callout-tint:#eaeaea; }
+.cq-callout--warning { --cq-callout-accent:#a57927; --cq-callout-tint:#fbf3e2; }
+.cq-callout--caution { --cq-callout-accent:#a33d3d; --cq-callout-tint:#faeded; }
+.cq-callout .cq-callout__heading {
+  margin:0 0 6px; padding:0; color:var(--cq-callout-accent);
+  font:600 11px/1.4 var(--font-mono,ui-monospace,monospace);
+  letter-spacing:.055em; text-transform:uppercase;
+}
+.cq-callout .cq-callout__content > :first-child { margin-top:0; }
+.cq-callout .cq-callout__content > :last-child { margin-bottom:0; }
+.cq-callout .cq-callout__content p { margin:0 0 9px; }
+.cq-callout .cq-callout__content ul,
+.cq-callout .cq-callout__content ol { margin:6px 0 9px; padding-left:22px; }
+.cq-callout .cq-callout__content a { color:inherit; text-decoration:underline; }
+.cq-callout .cq-callout__content code { overflow-wrap:anywhere; }
+@media(max-width:800px) {
+  .cq-panel-head { min-height:48px; padding:8px 10px 4px; }
+  .cq-panel .cq-panel-body { padding:4px 14px 18px; }
+  .cq-panel .cq-nav-links a { font-size:21px; padding:10px 8px; }
+  .cq-callout { padding:10px 12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .cq-panel .cq-close,.cq-panel .cq-nav-links a { transition:none!important; }
+}

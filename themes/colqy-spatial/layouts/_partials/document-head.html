@@ -1,0 +1,23 @@
+{{ $kind := .Params.content_type | default "page" }}
+{{ if .IsHome }}{{ $kind = "home" }}{{ end }}
+{{ $display := (site.Data.theme | default dict).display | default dict }}
+{{ $classification := true }}
+{{ if isset $display "classification" }}{{ $classification = $display.classification }}{{ end }}
+{{ if eq $kind "book" }}{{ $classification = ne $display.book_eyebrow false }}{{ end }}
+{{ if eq $kind "chapter" }}{{ $classification = ne $display.chapter_eyebrow false }}{{ end }}
+{{ $dateFormat := $display.date_format | default "year" }}
+{{ $dateText := "" }}
+{{ if and (ne $dateFormat "none") (not .Date.IsZero) }}
+  {{ if eq $dateFormat "full" }}{{ $dateText = .Date.Format "2 January 2006" }}{{ else }}{{ $dateText = .Date.Format "2006" }}{{ end }}
+{{ end }}
+<div class="cq-document-head">
+  {{ if or $classification $dateText }}
+  <div class="cq-overline">{{ if $classification }}<span>{{ $kind }}</span>{{ end }}{{ if and $classification $dateText }} <span aria-hidden="true">/</span> {{ end }}{{ with $dateText }}<time datetime="{{ $.Date.Format "2006-01-02" }}">{{ . }}</time>{{ end }}</div>
+  {{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="cq-lead">{{ . }}</p>{{ end }}
+  {{ if not (in (slice "page" "project" "article") $kind) }}
+    {{ if ne $display.collections false }}{{ with .Params.collections }}<div class="cq-tags" aria-label="Collections">{{ range . }}<span>{{ . }}</span>{{ end }}</div>{{ end }}{{ end }}
+    {{ partial "status-notice.html" . }}
+  {{ end }}
+</div>

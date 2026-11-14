@@ -1,0 +1,61 @@
+{{ define "main" }}
+{{ $rule := .Params.selection | default dict }}
+{{ $formats := $rule.content_types | default (slice) }}
+{{ $mode := $rule.mode | default "automatic" }}
+{{ $manual := or (eq $mode "manual") ($rule.manual | default false) }}
+{{ $candidates := slice }}
+{{ with site.GetPage "/sources" }}
+  {{ range .Pages }}
+    {{ if not .Params.book_chapter }}{{ $candidates = append . $candidates }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ $selected := slice }}
+{{ if $manual }}
+  {{ $ids := $rule.sources | default (slice) }}
+  {{ range $rule.items | default (slice) }}{{ with .slug }}{{ $ids = append . $ids }}{{ end }}{{ end }}
+  {{ range $ids }}
+    {{ $id := . }}
+    {{ range $candidates }}
+      {{ if eq .File.Dir (printf "sources/%s/" $id) }}
+        {{ if not (in $selected .) }}{{ $selected = append . $selected }}{{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ range $rule.books | default (slice) }}
+    {{ $id := . }}
+    {{ range $candidates }}
+      {{ if and (eq .Params.content_type "book") (eq .File.Dir (printf "sources/%s/" $id)) }}
+        {{ if not (in $selected .) }}{{ $selected = append . $selected }}{{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ range $candidates }}
+    {{ $entry := . }}
+    {{ $kind := .Params.content_type | default "page" }}
+    {{ if eq $kind "research" }}{{ $kind = "project" }}{{ end }}
+    {{ if eq $kind "essay" }}{{ $kind = "article" }}{{ end }}
+    {{ $okType := or (eq (len $formats) 0) (in $formats $kind) }}
+    {{ $okCollections := true }}
+    {{ $okTags := true }}
+    {{ with $rule.collections }}{{ $okCollections = gt (len (intersect . ($entry.Params.collections | default (slice)))) 0 }}{{ end }}
+    {{ with $rule.tags }}{{ $okTags = gt (len (intersect . ($entry.Params.tags | default (slice)))) 0 }}{{ end }}
+    {{ if and $okType $okCollections $okTags (not .Draft) (not .Params.utility_page) }}{{ $selected = append . $selected }}{{ end }}
+  {{ end }}
+  {{ $sort := .Params.presentation.sort | default "newest" }}
+  {{ if eq $sort "title" }}{{ $selected = sort $selected "Title" "asc" }}
+  {{ else if eq $sort "weight" }}{{ $selected = sort $selected "Weight" "asc" }}
+  {{ else if eq $sort "oldest" }}{{ $selected = sort $selected "Date" "asc" }}
+  {{ else }}{{ $selected = sort $selected "Date" "desc" }}{{ end }}
+{{ end }}
+{{ $view := .Params.presentation.view | default "list" }}
+<section class="cq-document cq-index">
+  {{ partial "document-head.html" . }}
+  {{ with .Content }}<div class="cq-prose">{{ . }}</div>{{ end }}
+  <div class="cq-section-heading">Selected entries / {{ len $selected }}</div>
+  {{ partial "entries.html" (dict "pages" $selected "view" $view) }}
+</section>
+{{ end }}
+{{ define "support" }}
+  {{ with .Params.supporting_content }}<div class="cq-support-document"><div class="cq-support-meta">SUPPORTING / INDEX</div>{{ . | markdownify }}</div>{{ end }}
+{{ end }}

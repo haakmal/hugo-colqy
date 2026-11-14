@@ -1,0 +1,5 @@
+{{ $columns := .Get "columns" | default "2" }}
+{{ if not (in (slice "2" "3") (printf "%v" $columns)) }}{{ errorf "gallery columns must be 2 or 3: %s" .Position }}{{ end }}
+<div class="cq-gallery cq-gallery--{{ $columns }}" role="group" aria-label="{{ .Get "label" | default "Image gallery" }}">
+  {{ .Inner }}
+</div>

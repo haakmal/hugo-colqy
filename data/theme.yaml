@@ -1,0 +1,21 @@
+skin: default
+shell:
+  controls: right
+  header_sticky: false
+  left_percent: 60
+  right_percent: 40
+display:
+  overline: true
+  classification: false
+  date_format: full
+  collections: true
+  tags: true
+  supporting_eyebrow: false
+  book_eyebrow: false
+  chapter_eyebrow: false
+  book_toc_label: false
+mobile:
+  breakpoint: 800
+  supporting: panel
+motion:
+  enabled: true

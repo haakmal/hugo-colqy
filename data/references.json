@@ -1,0 +1,59 @@
+[
+  {
+    "id": "colqyVale2025",
+    "type": "article-journal",
+    "title": "Situated Evidence and Creative Inquiry (fictional demonstration)",
+    "author": [
+      {
+        "family": "Vale",
+        "given": "Mira"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2025
+        ]
+      ]
+    },
+    "container-title": "Journal of Imagined Design Research"
+  },
+  {
+    "id": "colqyElian2024",
+    "type": "book",
+    "title": "Material Interactions: A Practice Reader (fictional demonstration)",
+    "author": [
+      {
+        "family": "Elian",
+        "given": "Noor"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2024
+        ]
+      ]
+    },
+    "publisher": "Colqy Demonstration Press"
+  },
+  {
+    "id": "colqyAster2026",
+    "type": "article-journal",
+    "title": "Making Systems Visible (fictional demonstration)",
+    "author": [
+      {
+        "family": "Aster",
+        "given": "Jules"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2026
+        ]
+      ]
+    },
+    "container-title": "Imaginary Proceedings of Design Inquiry"
+  }
+]

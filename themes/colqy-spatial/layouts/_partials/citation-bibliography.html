@@ -1,0 +1,9 @@
+{{- /* Bibliography is rendered from the shared CSL JSON library, never entered manually. */ -}}
+{{- with .File -}}
+  {{- with index (site.Data.citation_cache | default dict) .Path -}}
+<section class="cq-support-document cq-bibliography" aria-label="Bibliography" id="cq-bibliography">
+  <h2 class="cq-support-meta">REFERENCES</h2>
+  <div class="cq-reference-list">{{ .bibliography | safeHTML }}</div>
+</section>
+  {{- end -}}
+{{- end -}}

@@ -1,0 +1,21 @@
+{{- /* Global rail uses the most urgent active announcement tone. */ -}}
+{{- $shared := site.Data.shared_statuses | default dict -}}
+{{- $legacy := (site.Data.statuses | default dict).shared | default dict -}}
+{{- $rank := 0 -}}
+{{- range site.Data.global_statuses.statuses | default (slice) -}}
+  {{- $entry := . -}}
+  {{- with .shared -}}
+    {{- $entry = index $shared . | default (index $legacy .) | default dict -}}
+  {{- end -}}
+  {{- $appearance := $entry.appearance | default "neutral" -}}
+  {{- $score := 0 -}}
+  {{- if eq $appearance "positive" -}}{{- $score = 1 -}}{{- end -}}
+  {{- if eq $appearance "caution" -}}{{- $score = 2 -}}{{- end -}}
+  {{- if eq $appearance "critical" -}}{{- $score = 3 -}}{{- end -}}
+  {{- if gt $score $rank -}}{{- $rank = $score -}}{{- end -}}
+{{- end -}}
+{{- $tone := "neutral" -}}
+{{- if eq $rank 1 -}}{{- $tone = "positive" -}}{{- end -}}
+{{- if eq $rank 2 -}}{{- $tone = "caution" -}}{{- end -}}
+{{- if eq $rank 3 -}}{{- $tone = "critical" -}}{{- end -}}
+{{- return $tone -}}

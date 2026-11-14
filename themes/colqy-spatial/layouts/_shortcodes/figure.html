@@ -1,0 +1,11 @@
+{{ $path := .Get "src" | default "" }}
+{{ if not $path }}{{ errorf "figure requires src: %s" .Position }}{{ end }}
+{{ $src := $path }}
+{{ with .Page.Resources.GetMatch $path }}{{ $src = .RelPermalink }}{{ end }}
+{{ $alt := .Get "alt" | default "" }}
+{{ $caption := .Get "caption" | default "" }}
+{{ $width := .Get "width" | default "standard" }}
+<figure class="cq-figure cq-figure--{{ $width | urlize }}">
+  <img src="{{ $src | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

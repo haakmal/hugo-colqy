@@ -1,0 +1,916 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+# Replace this with your own GitHub fork. Never put secrets in this public file.
+backend:
+  name: github
+  repo: YOUR_ACCOUNT/YOUR_REPOSITORY
+  branch: main
+
+# Default media storage
+media_folder: /static/uploads
+public_folder: /uploads
+
+collections:
+  - name: sources
+    icon: article
+    label: Content
+    folder: content/sources
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    fields:
+      - { name: title, label: Title, widget: string }
+      - name: content_type
+        label: Content type
+        widget: select
+        required: true
+        default: page
+        preview: false
+        hint: Choose what this source represents. Books, chapters and indexes have separate editors.
+        options:
+          - { label: Page, value: page }
+          - { label: Project, value: project }
+          - { label: Article, value: article }
+      - {
+          name: url,
+          label: Page address,
+          widget: string,
+          required: false,
+          preview: false,
+          hint: Optional. Use /about/ or /teaching/ for a root-level page. Leave blank for the automatic address.,
+        }
+      - {
+          name: description,
+          label: Summary,
+          widget: text,
+          required: false,
+          preview: false,
+          hint: A short description used in summaries and previews.,
+        }
+      - name: body
+        label: Primary content
+        widget: markdown
+        required: false
+        hint: Main writing area (Left region). Insert citations, figures and other content here.
+        editor_components:
+          [
+            code-block,
+            image,
+            colqy-figure,
+            colqy-split,
+            colqy-gallery,
+            colqy-citation,
+          ]
+      - name: collections
+        label: Collections
+        widget: relation
+        collection: collection_registry
+        multiple: true
+        required: false
+        value_field: id
+        display_fields: [title]
+        search_fields: [title, id, description]
+        preview: false
+      - name: tags
+        label: Tags
+        widget: relation
+        collection: tag_registry
+        multiple: true
+        required: false
+        value_field: id
+        display_fields: [title]
+        search_fields: [title, id, description]
+        preview: false
+      - {
+          name: draft,
+          label: Draft,
+          widget: boolean,
+          default: false,
+          required: false,
+          preview: false,
+          hint: Draft pages are excluded from normal production builds.,
+        }
+      - name: supporting_content
+        label: Supporting content
+        widget: markdown
+        editor_components: [code-block, image, colqy-figure, colqy-split, colqy-gallery]
+        required: false
+        preview: false
+        hint: Optional Right-region content for Pages and Projects. Hidden when empty on Articles. Existing Article text is retained and shown with a warning, but is not published.
+      - name: thumbnail
+        label: Index thumbnail (optional)
+        widget: image
+        required: false
+        hint: Optional image for Grid indexes. Leave blank for text-only entries.
+      - name: statuses
+        label: Statuses (optional)
+        widget: list
+        required: false
+        collapsed: auto
+        summary: "{{fields.heading}}{{fields.shared}}"
+        typeKey: mode
+        types:
+          - name: local
+            label: Local status
+            summary: "{{heading}} - {{value}}"
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: value, label: Current state, widget: string }
+              - { name: note, label: Note, widget: text, required: false }
+              - name: appearance
+                label: Appearance
+                widget: select
+                default: neutral
+                options: [neutral, positive, caution, critical]
+          - name: shared
+            label: Reuse shared status
+            summary: "{{shared}}"
+            fields:
+              - name: shared
+                label: Shared status
+                widget: relation
+                collection: shared_statuses
+                value_field: id
+                display_fields: [heading]
+                search_fields: [heading, id, value]
+                required: true
+      - {
+          name: date,
+          label: Publication date,
+          widget: datetime,
+          type: date,
+          required: false,
+          preview: false,
+          hint: Optional. Useful for articles and dated work.,
+        }
+      - {
+          name: featured,
+          label: Featured,
+          widget: boolean,
+          default: false,
+          required: false,
+          preview: false,
+          hint: Optional marker for themes that support featured content.,
+        }
+      - name: utility_page
+        label: Exclude from automatic listings
+        widget: boolean
+        default: false
+        required: false
+        preview: false
+        hint: Use for About and other site pages that should only appear in curated navigation.
+      - {
+          name: layout,
+          label: Advanced - layout override,
+          widget: string,
+          required: false,
+          preview: false,
+          hint: Optional Hugo template override. Leave blank to use the default.,
+        }
+      - {
+          name: weight,
+          label: Advanced - sort weight,
+          widget: number,
+          value_type: int,
+          required: false,
+          preview: false,
+          hint: Optional manual ordering value; leave blank unless needed.,
+        }
+    view_filters:
+      - { label: Pages, field: content_type, eq: page }
+      - { label: Articles, field: content_type, eq: article }
+      - { label: Projects, field: content_type, eq: project }
+    view_groups:
+      groups:
+        - { name: type, label: Content type, field: content_type }
+      default: type
+  - name: books
+    icon: menu_book
+    label: Books
+    label_singular: Book
+    folder: content/sources
+    path: "{{slug}}/_index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    description: Create a book overview here, then add chapters from Book Chapters.
+    fields:
+      - { name: title, label: Title, widget: string }
+      - {
+          name: url,
+          label: Page address,
+          widget: string,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: description,
+          label: Summary,
+          widget: text,
+          required: false,
+          preview: false,
+        }
+      - { name: body, label: Primary content, widget: markdown, required: false }
+      - name: collections
+        label: Collections
+        widget: relation
+        collection: collection_registry
+        multiple: true
+        required: false
+        value_field: id
+        display_fields: [title]
+        search_fields: [title, id, description]
+        preview: false
+      - name: tags
+        label: Tags
+        widget: relation
+        collection: tag_registry
+        multiple: true
+        required: false
+        value_field: id
+        display_fields: [title]
+        search_fields: [title, id, description]
+        preview: false
+      - {
+          name: draft,
+          label: Draft,
+          widget: boolean,
+          default: false,
+          required: false,
+          preview: false,
+        }
+      - name: thumbnail
+        label: Index thumbnail (optional)
+        widget: image
+        required: false
+        hint: Optional image for Grid indexes. Leave blank for text-only entries.
+      - name: statuses
+        label: Statuses (optional)
+        widget: list
+        required: false
+        collapsed: auto
+        summary: "{{fields.heading}}{{fields.shared}}"
+        typeKey: mode
+        types:
+          - name: local
+            label: Local status
+            summary: "{{heading}} - {{value}}"
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: value, label: Current state, widget: string }
+              - { name: note, label: Note, widget: text, required: false }
+              - name: appearance
+                label: Appearance
+                widget: select
+                default: neutral
+                options: [neutral, positive, caution, critical]
+          - name: shared
+            label: Reuse shared status
+            summary: "{{shared}}"
+            fields:
+              - name: shared
+                label: Shared status
+                widget: relation
+                collection: shared_statuses
+                value_field: id
+                display_fields: [heading]
+                search_fields: [heading, id, value]
+                required: true
+      - {
+          name: pdf,
+          label: PDF attachment filename,
+          widget: string,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: date,
+          label: Date,
+          widget: datetime,
+          type: date,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: featured,
+          label: Featured,
+          widget: boolean,
+          default: false,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: weight,
+          label: Advanced · sorting,
+          widget: number,
+          value_type: int,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: content_type,
+          label: Content type,
+          widget: hidden,
+          default: book,
+          preview: false,
+        }
+      - {
+          name: layout,
+          label: Layout,
+          widget: hidden,
+          default: book,
+          preview: false,
+        }
+  - name: book_chapters
+    icon: library_books
+    summary: "{{title}}"
+    label: Book Chapters
+    label_singular: Chapter
+    folder: content/sources
+    media_folder: ""
+    public_folder: ""
+    create: true
+    filter: { field: book_chapter, value: true }
+    reorder:
+      key: weight
+    description: Choose the book in each chapter editor to file it correctly.
+    path: "{{fields.book}}/{{slug}}/index"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - name: book
+        label: Belongs to book
+        widget: relation
+        collection: books
+        value_field: "{{slug}}"
+        display_fields: [title]
+        search_fields: [title]
+        required: true
+        hint: Choose an existing book. This determines the chapter folder.
+        preview: false
+      - {
+          name: chapter_number,
+          label: Chapter number,
+          widget: string,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: weight,
+          label: Chapter order,
+          widget: number,
+          value_type: int,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: url,
+          label: Page address,
+          widget: string,
+          required: false,
+          preview: false,
+        }
+      - {
+          name: description,
+          label: Summary,
+          widget: text,
+          required: false,
+          preview: false,
+        }
+      - { name: body, label: Primary content, widget: markdown, required: false }
+      - name: statuses
+        label: Statuses (optional)
+        widget: list
+        required: false
+        collapsed: auto
+        summary: "{{fields.heading}}{{fields.shared}}"
+        typeKey: mode
+        types:
+          - name: local
+            label: Local status
+            summary: "{{heading}} - {{value}}"
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: value, label: Current state, widget: string }
+              - { name: note, label: Note, widget: text, required: false }
+              - name: appearance
+                label: Appearance
+                widget: select
+                default: neutral
+                options: [neutral, positive, caution, critical]
+          - name: shared
+            label: Reuse shared status
+            summary: "{{shared}}"
+            fields:
+              - name: shared
+                label: Shared status
+                widget: relation
+                collection: shared_statuses
+                value_field: id
+                display_fields: [heading]
+                search_fields: [heading, id, value]
+                required: true
+      - {
+          name: layout,
+          label: Layout,
+          widget: hidden,
+          default: chapter,
+          preview: false,
+        }
+      - {
+          name: book_chapter,
+          label: Chapter,
+          widget: hidden,
+          default: true,
+          preview: false,
+        }
+      - {
+          name: content_type,
+          label: Content type,
+          widget: hidden,
+          default: chapter,
+          preview: false,
+        }
+    view_groups:
+      groups:
+        - { name: parent, label: Parent book, field: book }
+      default: parent
+  - name: indexes
+    icon: view_list
+    label: Indexes
+    label_singular: Index
+    folder: content/indexes
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: url, label: Page address, widget: string, required: false }
+      - {
+          name: description,
+          label: Summary,
+          widget: text,
+          required: false,
+          preview: false,
+        }
+      - { name: body, label: Introduction, widget: markdown, required: false }
+      - name: selection
+        label: Index selection
+        hint: Choose Automatic or Hand-picked. Only one selection method can be active at a time; change the current selection type to switch.
+        widget: object
+        collapsed: false
+        typeKey: mode
+        required: true
+        default: { mode: automatic }
+        types:
+          - name: automatic
+            label: Automatic - by content and filters
+            description: "Updates using content type, collection and tag filters."
+            fields:
+              - name: content_types
+                label: Content types (none means all)
+                widget: select
+                multiple: true
+                required: false
+                options: [page, project, article, book]
+              - name: collections
+                label: Collections (optional)
+                widget: relation
+                collection: collection_registry
+                multiple: true
+                required: false
+                value_field: id
+                display_fields: [title]
+                search_fields: [title, id]
+              - name: tags
+                label: Tags (optional)
+                widget: relation
+                collection: tag_registry
+                multiple: true
+                required: false
+                value_field: id
+                display_fields: [title]
+                search_fields: [title, id]
+          - name: manual
+            label: Hand-picked - choose individual entries
+            description: "Choose individual sources and books."
+            fields:
+              - name: sources
+                label: Pages, projects and articles
+                widget: relation
+                collection: sources
+                multiple: true
+                required: false
+                value_field: "{{slug}}"
+                display_fields: [title]
+                search_fields: [title, description]
+              - name: books
+                label: Books
+                widget: relation
+                collection: books
+                multiple: true
+                required: false
+                value_field: "{{slug}}"
+                display_fields: [title]
+                search_fields: [title, description]
+      - name: presentation
+        label: Presentation
+        widget: object
+        summary: "{{view}} - {{sort}}"
+        collapsed: auto
+        fields:
+          - name: view
+            label: View
+            widget: select
+            default: grid
+            options: [list, grid, timeline]
+          - name: sort
+            label: Automatic sorting
+            widget: select
+            default: newest
+            options: [newest, oldest, title, weight]
+      - { name: draft, widget: boolean, default: false, required: false }
+      - name: statuses
+        label: Statuses (optional)
+        widget: list
+        required: false
+        collapsed: auto
+        summary: "{{fields.heading}}{{fields.shared}}"
+        typeKey: mode
+        types:
+          - name: local
+            label: Local status
+            summary: "{{heading}} - {{value}}"
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: value, label: Current state, widget: string }
+              - { name: note, label: Note, widget: text, required: false }
+              - name: appearance
+                label: Appearance
+                widget: select
+                default: neutral
+                options: [neutral, positive, caution, critical]
+          - name: shared
+            label: Reuse shared status
+            summary: "{{shared}}"
+            fields:
+              - name: shared
+                label: Shared status
+                widget: relation
+                collection: shared_statuses
+                value_field: id
+                display_fields: [heading]
+                search_fields: [heading, id, value]
+                required: true
+      - { name: content_type, widget: hidden, default: index }
+      - { name: layout, widget: hidden, default: index }
+  - divider: true
+  - name: reference_library
+    label: References
+    icon: menu_book
+    description: Import BibTeX into the site-wide reference library.
+    files:
+      - name: references
+        label: Reference library
+        file: data/references.json
+        format: colqy-csl-array
+        fields:
+          - name: references_json
+            label: References
+            widget: colqy-bibtex-library
+            required: true
+            hint: 'Paste BibTeX, review new entries, then save through Sveltia. Advanced CSL JSON editing remains available.'
+  - name: site_settings
+    label: "Site"
+    description: "Edit the homepage, navigation, announcements, identity and site appearance. Create ordinary pages in Content."
+    icon: settings
+    files:
+      - name: home
+        label: Homepage
+        description: "Edit the homepage body here. Its eyebrow and fallback labels are configured in Identity & labels."
+        file: content/_index.md
+        fields:
+          - { name: title, label: Title, widget: string }
+          - { name: body, label: Body, widget: markdown, required: false }
+      - name: main_navigation
+        label: Navigation
+        file: data/navigation.yaml
+        format: yaml
+        fields:
+          - name: main
+            label: Navigation links
+            hint: "These links appear in the site navigation. Reorder them below; hide a link without deleting it."
+            widget: list
+            label_singular: Link
+            required: false
+            collapsed: false
+            summary: "{{label}} - {{url}}"
+            fields:
+              - { name: label, label: Link label, widget: string }
+              - {
+                  name: url,
+                  label: Destination URL,
+                  widget: string,
+                  hint: "Use /about/ for local pages or https:// for external sites.",
+                }
+              - {
+                  name: enabled,
+                  label: Show link,
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                }
+      - name: announcements
+        label: Announcements
+        file: data/global_statuses.yaml
+        format: yaml
+        fields:
+          - name: statuses
+            label: "Global announcements"
+            hint: "These appear in the persistent site-wide announcement rail. Write a new announcement or reuse a saved status. Page-specific statuses belong in Content."
+            widget: list
+            required: false
+            collapsed: false
+            summary: "{{fields.heading}}{{fields.shared}}"
+            typeKey: mode
+            types:
+              - name: local
+                label: Write announcement
+                summary: "{{heading}} - {{value}}"
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: value, label: Current state, widget: string }
+                  - { name: note, label: Note, widget: text, required: false }
+                  - name: appearance
+                    label: Appearance
+                    widget: select
+                    default: neutral
+                    options: [neutral, positive, caution, critical]
+              - name: shared
+                label: Use reusable status
+                summary: "{{shared}}"
+                fields:
+                  - name: shared
+                    label: Shared status
+                    widget: relation
+                    collection: shared_statuses
+                    value_field: id
+                    display_fields: [heading]
+                    search_fields: [heading, id, value]
+                    required: true
+      - name: site_identity
+        label: "Identity & labels"
+        file: data/site_content.yaml
+        format: yaml
+        fields:
+          - name: header
+            label: Header
+            widget: object
+            collapsed: false
+            fields:
+              - {
+                  name: tagline,
+                  label: Header tagline,
+                  widget: string,
+                  required: false,
+                  hint: "Optional text alongside the site title.",
+                }
+          - name: home
+            label: Homepage labels
+            widget: object
+            collapsed: false
+            fields:
+              - {
+                  name: overline,
+                  label: Homepage eyebrow,
+                  widget: string,
+                  required: false,
+                  hint: "Text displayed in the homepage eyebrow; visibility is controlled under Appearance → Page information.",
+                }
+              - {
+                  name: fallback_title,
+                  label: Fallback homepage title,
+                  widget: string,
+                  required: false,
+                  hint: "Used only when the homepage has no body content or custom title. Leave blank for the site title.",
+                }
+              - {
+                  name: featured_heading,
+                  label: Featured section heading,
+                  widget: string,
+                  required: false,
+                }
+          - name: footer
+            label: Information panel
+            widget: object
+            collapsed: false
+            fields:
+              - {
+                  name: contact_label,
+                  label: Contact link text,
+                  widget: string,
+                  required: false,
+                }
+              - {
+                  name: note,
+                  label: Footer information,
+                  widget: text,
+                  required: false,
+                }
+      - name: theme_preferences
+        label: "Appearance"
+        file: data/theme.yaml
+        format: yaml
+        fields:
+          - { name: skin, widget: hidden, default: default }
+          - name: shell
+            label: "Layout"
+            widget: object
+            collapsed: false
+            fields:
+              - name: controls
+                label: "Navigation rail side"
+                widget: select
+                options:
+                  [{ label: Right, value: right }, { label: Left, value: left }]
+                default: right
+              - {
+                  name: header_sticky,
+                  label: "Keep site header visible",
+                  widget: boolean,
+                  default: false,
+                  required: false,
+                }
+              - {
+                  name: left_percent,
+                  label: "Left region width (%)",
+                  widget: number,
+                  value_type: int,
+                  min: 20,
+                  max: 80,
+                  default: 56,
+                  hint: "Left and Right remain separate regions, even when one is empty. Their widths must total 100%.",
+                }
+              - {
+                  name: right_percent,
+                  label: "Right region width (%)",
+                  widget: number,
+                  value_type: int,
+                  min: 20,
+                  max: 80,
+                  default: 44,
+                  hint: "Set together with Left region width so the total is 100%.",
+                }
+          - name: display
+            label: "Page information"
+            widget: object
+            collapsed: false
+            fields:
+              - {
+                  name: overline,
+                  label: Show homepage eyebrow,
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                  hint: "Shows the homepage preamble configured in Site identity and labels.",
+                }
+              - {
+                  name: classification,
+                  label: "Show document type above title",
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                  hint: "Controls the type label in the page eyebrow (slug line). Date visibility is independent.",
+                }
+              - {
+                  name: date_format,
+                  label: "Publication date above title",
+                  widget: select,
+                  default: year,
+                  options:
+                    [
+                      { label: Hide date, value: none },
+                      { label: Year only, value: year },
+                      { label: Full date, value: full },
+                    ],
+                  hint: "Choose no date, year or full date in the page eyebrow. Articles and Pages can be published chronologically.",
+                }
+              - {
+                  name: collections,
+                  label: "Show collections in Right region",
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                }
+              - {
+                  name: tags,
+                  label: "Show tags in Right region",
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                }
+              - {
+                  name: supporting_eyebrow,
+                  label: "Show Supporting / Material label",
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                  hint: "Shows SUPPORTING / MATERIAL above Page and Project supporting content. Does not affect the content itself.",
+                }
+              - {name: book_eyebrow, label: "Show Book type above title", widget: boolean, default: true, required: false, hint: 'Controls Book classification independently of other source types. Publication date remains independent.'}
+              - {name: chapter_eyebrow, label: "Show Chapter type above title", widget: boolean, default: true, required: false, hint: 'Controls Chapter classification independently of other source types. Publication date remains independent.'}
+              - {name: book_toc_label, label: "Show Book / Contents label", widget: boolean, default: true, required: false, hint: 'Hides only the small TOC heading, not the Book title or navigation.'}
+          - name: mobile
+            label: "Mobile reading"
+            widget: object
+            collapsed: true
+            fields:
+              - { name: breakpoint, widget: hidden, default: 800 }
+              - name: supporting
+                label: "Supporting content on mobile"
+                widget: select
+                options:
+                  [
+                    { label: Panel, value: panel },
+                    { label: Inline, value: inline },
+                  ]
+                default: panel
+          - name: motion
+            label: Motion
+            widget: object
+            collapsed: true
+            fields:
+              - {
+                  name: enabled,
+                  label: "Enable interface transitions",
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                }
+  - name: collection_registry
+    icon: category
+    label: "Organisation / Collections"
+    description: "Reusable groups of content. Used for browsing and automatic Index filtering."
+    folder: data/organisation/collections
+    format: yaml
+    extension: yaml
+    identifier_field: id
+    slug:
+      template: "{{fields.id}}"
+      editable: [create]
+    create: true
+    fields:
+      - { name: id, label: "Identifier (used in filters)", widget: string, hint: "Stable identifier used in source metadata and Index filters. Avoid changing after use." }
+      - { name: title, label: Display name, widget: string }
+      - { name: description, label: Description, widget: text, required: false }
+      - name: default_view
+        label: Default display
+        widget: select
+        options: [{ label: Index, value: index }, { label: Grid, value: grid }]
+        default: index
+      - {
+          name: order,
+          label: Display order,
+          widget: number,
+          value_type: int,
+          required: false,
+        }
+  - name: tag_registry
+    icon: sell
+    label: "Organisation / Tags"
+    description: "Reusable descriptive labels for content and Index filtering."
+    folder: data/organisation/tags
+    format: yaml
+    extension: yaml
+    identifier_field: id
+    slug:
+      template: "{{fields.id}}"
+      editable: [create]
+    create: true
+    fields:
+      - { name: id, label: "Identifier (used in filters)", widget: string, hint: "Stable identifier used by content and Index filters. Avoid changing after use." }
+      - { name: title, label: Display name, widget: string }
+      - { name: description, label: Description, widget: text, required: false }
+  - name: shared_statuses
+    icon: sync
+    label: "Organisation / Reusable statuses"
+    description: "Define a status once and reuse it on content or in global announcements. This collection does not publish announcements itself."
+    label_singular: Shared status
+    folder: data/shared_statuses
+    format: yaml
+    extension: yaml
+    identifier_field: id
+    slug:
+      template: "{{fields.id}}"
+      editable: [create]
+    create: true
+    fields:
+      - { name: id, label: "Identifier (used in references)", widget: string, hint: "Stable identifier referenced by local and global status assignments. Avoid changing after use." }
+      - { name: heading, label: Heading, widget: string }
+      - { name: value, label: Current state, widget: string }
+      - { name: note, label: Note, widget: text, required: false }
+      - name: appearance
+        label: Appearance
+        widget: select
+        default: neutral
+        options: [neutral, positive, caution, critical]

@@ -1,0 +1,22 @@
+/* A6.3g — Universal content-image lightbox. Final visual QA remains deferred. */
+.cq-gallery__zoom{display:block;width:100%;padding:0;margin:0;border:0;background:transparent;text-align:left;cursor:zoom-in}
+.cq-gallery__zoom img{width:100%;height:auto;display:block}
+.cq-gallery__zoom:focus-visible,.cq-lightbox-trigger:focus-visible{outline:2px solid var(--ink,#151515);outline-offset:3px}
+.cq-lightbox-trigger{cursor:zoom-in}
+.cq-lightbox{position:fixed;inset:0;box-sizing:border-box;width:min(1100px,calc(100vw - 24px));height:min(94dvh,900px);max-width:none;max-height:none;padding:0;border:1px solid #151515;background:#fff;color:#151515;overflow:hidden}
+.cq-lightbox::backdrop{background:rgba(0,0,0,.82)}
+.cq-lightbox__frame{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.cq-lightbox__toolbar,.cq-lightbox__bottom{display:flex;align-items:center;gap:12px;padding:10px 12px}
+.cq-lightbox__toolbar{justify-content:space-between;border-bottom:1px solid #ccc}
+.cq-lightbox__bottom{justify-content:space-between;border-top:1px solid #ccc}
+.cq-lightbox__hint{flex:1;text-align:center;font:11px/1.4 ui-monospace,monospace;color:#555}
+.cq-lightbox button{min-height:36px;padding:6px 10px;border:1px solid #aaa;background:#fff;color:#151515;font:inherit;cursor:pointer}
+.cq-lightbox button:focus-visible{outline:2px solid #151515;outline-offset:2px}
+.cq-lightbox__counter{font:12px/1.4 ui-monospace,monospace;min-width:3ch}
+.cq-lightbox__viewport{min-height:0;overflow:auto;display:flex;align-items:flex-start;justify-content:flex-start;padding:12px;box-sizing:border-box}
+.cq-lightbox__viewport img{display:block;flex:none;object-fit:contain;margin:auto;max-width:100%;max-height:100%;height:auto}
+.cq-lightbox__viewport img.can-zoom{cursor:zoom-in}
+.cq-lightbox__viewport img.is-zoomed{cursor:zoom-out;margin:0;object-fit:initial}
+.cq-lightbox__caption{flex:1;text-align:center;font-size:13px;line-height:1.45;margin:0;min-width:0}
+@media(max-width:600px){.cq-lightbox{width:calc(100vw - 12px);height:calc(100dvh - 24px)}.cq-lightbox__toolbar,.cq-lightbox__bottom{padding:8px;gap:5px}.cq-lightbox button{min-height:44px;padding:8px}.cq-lightbox__caption{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.cq-lightbox,.cq-lightbox *{animation:none!important;transition:none!important}}

@@ -1,0 +1,23 @@
+{{ define "main" }}
+<article class="cq-document cq-book" itemscope itemtype="https://schema.org/Book">
+  {{ partial "document-head.html" . }}
+  <div class="cq-prose">{{ partial "citation-content.html" . }}</div>
+</article>
+{{ end }}
+{{ define "support" }}
+  <div class="cq-support-document">
+    {{ partial "book-toc.html" (dict "book" . "current" .) }}
+{{ partial "citation-bibliography.html" . }}
+    {{ $chapters := where .RegularPages "Params.book_chapter" true }}
+    {{ if gt (len $chapters) 0 }}
+      {{ with index ($chapters.ByWeight) 0 }}
+      <nav class="cq-book-start" aria-label="Begin reading">
+        <a class="cq-pager-card cq-pager-card--next" href="{{ .RelPermalink }}">
+          <span class="cq-pager-label">Begin reading →</span>
+          <span class="cq-pager-title">{{ .LinkTitle }}</span>
+        </a>
+      </nav>
+      {{ end }}
+    {{ end }}
+  </div>
+{{ end }}

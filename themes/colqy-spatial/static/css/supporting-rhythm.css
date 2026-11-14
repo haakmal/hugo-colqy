@@ -1,0 +1,149 @@
+/* Colqy A6.3r.5 — compact supporting-region rhythm.
+   Right-region content uses the same spacing language as Collections / Tags.
+   This stylesheet loads after spatial.css and citations.css. */
+#cq-support-content {
+  --cq-support-gap: 12px;
+  --cq-item-gap: 6px;
+}
+#cq-support-content > .cq-support-document + .cq-support-document,
+#cq-support-content .cq-support-document > .cq-bibliography,
+#cq-support-content .cq-support-document > #cq-footnote-slot:not(:empty),
+#cq-support-content > #cq-footnote-slot:not(:empty) {
+  margin-top: var(--cq-support-gap);
+}
+/* Footnote HTML may be a Goldmark .footnotes section, with cq-footnotes
+   added when the notes are moved to the Right region. Reset both shapes. */
+#cq-footnote-slot .footnotes,
+#cq-footnote-slot .cq-footnotes {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+#cq-footnote-slot .footnotes > hr,
+#cq-footnote-slot .cq-footnotes > hr { display: none; }
+#cq-footnote-slot .footnotes ol,
+#cq-footnote-slot .cq-footnotes ol {
+  margin: 0;
+  padding: 0 0 0 19px;
+  list-style-position: outside;
+}
+#cq-footnote-slot .footnotes li,
+#cq-footnote-slot .cq-footnotes li {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+}
+#cq-footnote-slot .footnotes li + li,
+#cq-footnote-slot .cq-footnotes li + li { margin-top: var(--cq-item-gap); }
+#cq-footnote-slot .footnotes li p,
+#cq-footnote-slot .cq-footnotes li p {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+}
+#cq-footnote-slot .footnotes li p + p,
+#cq-footnote-slot .cq-footnotes li p + p { margin-top: var(--cq-item-gap); }
+#cq-footnote-slot .footnotes a,
+#cq-footnote-slot .cq-footnotes a { overflow-wrap: anywhere; }
+/* Book TOC: no row dividers. Root, chapters and headings are differentiated
+   through typography, indentation and current-page state instead. */
+#cq-support-content .cq-book-tree,
+#cq-support-content .cq-book-tree ol,
+#cq-support-content .cq-book-tree ul,
+#cq-support-content .cq-book-tree nav {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0;
+}
+#cq-support-content .cq-book-tree-root {
+  display: block;
+  border: 0;
+  margin: 0;
+  padding: 0 0 8px;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+#cq-support-content .cq-book-tree-chapters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#cq-support-content .cq-book-tree-chapter,
+#cq-support-content .cq-book-tree-chapter > a {
+  margin: 0;
+  border: 0;
+}
+#cq-support-content .cq-toc .cq-book-tree-chapter > a {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 5px 0;
+  border: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+#cq-support-content .cq-book-tree-headings {
+  margin: 0;
+  padding: 0 0 5px 24px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  border: 0;
+}
+#cq-support-content .cq-book-tree-headings ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#cq-support-content .cq-book-tree-headings ul ul { padding-left: 12px; }
+#cq-support-content .cq-book-tree-headings li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#cq-support-content .cq-toc .cq-book-tree-headings li a {
+  display: block;
+  margin: 0;
+  padding: 3px 0;
+  border: 0;
+  color: var(--muted);
+  text-decoration: none;
+}
+#cq-support-content .cq-toc .cq-book-tree-headings li a:hover,
+#cq-support-content .cq-toc .cq-book-tree-headings li a:focus-visible {
+  color: var(--ink);
+  text-decoration: underline;
+}
+/* Retain the bordered Previous / Next action cards. */
+#cq-support-content .cq-chapter-pager--support,
+#cq-support-content .cq-book-start { margin-top: var(--cq-support-gap); }
+@media (max-width:800px) {
+  #cq-support-content { --cq-support-gap: 12px; --cq-item-gap: 6px; }
+}
+
+/* Colqy A6.3r.6 — compact chapter rows, consistent with Right-region metadata. */
+#cq-support-content {
+  --cq-toc-row-pad: 2px;
+}
+#cq-support-content .cq-toc .cq-book-tree-chapter > a {
+  margin: 0;
+  padding-top: var(--cq-toc-row-pad);
+  padding-bottom: var(--cq-toc-row-pad);
+  line-height: 1.4;
+}
+#cq-support-content .cq-book-tree-headings {
+  padding-top: 0;
+  padding-bottom: 3px;
+}
+#cq-support-content .cq-toc .cq-book-tree-headings li a {
+  margin: 0;
+  padding: 2px 0;
+  line-height: 1.4;
+}
+/* The TOC is navigational text, not a sequence of cards. */
+#cq-support-content .cq-book-tree-chapters > li + li { margin-top: 0; }

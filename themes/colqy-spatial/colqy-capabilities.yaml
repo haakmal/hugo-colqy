@@ -1,0 +1,14 @@
+theme: colqy-spatial
+contract_version: 1
+capabilities:
+  dual_regions: true
+  mobile_supporting_panel: true
+  source_supporting_content: true
+  source_supporting_cms_editor: true
+  reusable_statuses: true
+  index_list: true
+  index_grid: true
+  index_gallery: false
+  index_timeline: true
+  gallery_lightbox: true
+  csl_citations: true

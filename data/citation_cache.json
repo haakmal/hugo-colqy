@@ -1,0 +1,67 @@
+{
+  "sources/colqy-public-journal-observation/index.md": {
+    "bibliography": "<div id=\"refs\" class=\"references csl-bib-body hanging-indent\"\ndata-entry-spacing=\"0\" role=\"list\">\n<div id=\"ref-colqyVale2025\" class=\"csl-entry\" role=\"listitem\">\nVale, Mira. 2025. <span>“Situated Evidence and Creative Inquiry\n(Fictional Demonstration).”</span> <em>Journal of Imagined Design\nResearch</em>.\n</div>\n</div>",
+    "replacements": [
+      {
+        "html": "<span class=\"citation\" data-cites=\"colqyVale2025\">(<a\nhref=\"#ref-colqyVale2025\" role=\"doc-biblioref\">Vale 2025</a>)</span>",
+        "pattern": "\\[\\s*@colqyVale2025\\s*\\]",
+        "raw": "[@colqyVale2025]"
+      }
+    ],
+    "style": "pandoc-default"
+  },
+  "sources/colqy-public-mapping-relations/chapter-one/index.md": {
+    "bibliography": "<div id=\"refs\" class=\"references csl-bib-body hanging-indent\"\ndata-entry-spacing=\"0\" role=\"list\">\n<div id=\"ref-colqyVale2025\" class=\"csl-entry\" role=\"listitem\">\nVale, Mira. 2025. <span>“Situated Evidence and Creative Inquiry\n(Fictional Demonstration).”</span> <em>Journal of Imagined Design\nResearch</em>.\n</div>\n</div>",
+    "replacements": [
+      {
+        "html": "<span class=\"citation\" data-cites=\"colqyVale2025\">(<a\nhref=\"#ref-colqyVale2025\" role=\"doc-biblioref\">Vale 2025</a>)</span>",
+        "pattern": "\\[\\s*@colqyVale2025\\s*\\]",
+        "raw": "[@colqyVale2025]"
+      }
+    ],
+    "style": "pandoc-default"
+  },
+  "sources/colqy-public-mapping-relations/chapter-two/index.md": {
+    "bibliography": "<div id=\"refs\" class=\"references csl-bib-body hanging-indent\"\ndata-entry-spacing=\"0\" role=\"list\">\n<div id=\"ref-colqyAster2026\" class=\"csl-entry\" role=\"listitem\">\nAster, Jules. 2026. <span>“Making Systems Visible (Fictional\nDemonstration).”</span> <em>Imaginary Proceedings of Design\nInquiry</em>.\n</div>\n<div id=\"ref-colqyElian2024\" class=\"csl-entry\" role=\"listitem\">\nElian, Noor. 2024. <em>Material Interactions: A Practice Reader\n(Fictional Demonstration)</em>. Colqy Demonstration Press.\n</div>\n</div>",
+    "replacements": [
+      {
+        "html": "<span class=\"citation\"\ndata-cites=\"colqyElian2024 colqyAster2026\">(<a\nhref=\"#ref-colqyElian2024\" role=\"doc-biblioref\">Elian 2024</a>; <a\nhref=\"#ref-colqyAster2026\" role=\"doc-biblioref\">Aster\n2026</a>)</span>",
+        "pattern": "\\[\\s*@colqyElian2024\\s*[,;]\\s*@?colqyAster2026\\s*\\]",
+        "raw": "[@colqyElian2024; @colqyAster2026]"
+      }
+    ],
+    "style": "pandoc-default"
+  },
+  "sources/colqy-public-markdown-guide/index.md": {
+    "bibliography": "<div id=\"refs\" class=\"references csl-bib-body hanging-indent\"\ndata-entry-spacing=\"0\" role=\"list\">\n<div id=\"ref-colqyElian2024\" class=\"csl-entry\" role=\"listitem\">\nElian, Noor. 2024. <em>Material Interactions: A Practice Reader\n(Fictional Demonstration)</em>. Colqy Demonstration Press.\n</div>\n<div id=\"ref-colqyVale2025\" class=\"csl-entry\" role=\"listitem\">\nVale, Mira. 2025. <span>“Situated Evidence and Creative Inquiry\n(Fictional Demonstration).”</span> <em>Journal of Imagined Design\nResearch</em>.\n</div>\n</div>",
+    "replacements": [
+      {
+        "html": "<span class=\"citation\"\ndata-cites=\"colqyVale2025 colqyElian2024\">(<a href=\"#ref-colqyVale2025\"\nrole=\"doc-biblioref\">Vale 2025</a>; <a href=\"#ref-colqyElian2024\"\nrole=\"doc-biblioref\">Elian 2024</a>)</span>",
+        "pattern": "\\[\\s*@colqyVale2025\\s*[,;]\\s*@?colqyElian2024\\s*\\]",
+        "raw": "[@colqyVale2025; @colqyElian2024]"
+      }
+    ],
+    "style": "pandoc-default"
+  },
+  "sources/colqy-public-research-note/index.md": {
+    "bibliography": "<div id=\"refs\" class=\"references csl-bib-body hanging-indent\"\ndata-entry-spacing=\"0\" role=\"list\">\n<div id=\"ref-colqyAster2026\" class=\"csl-entry\" role=\"listitem\">\nAster, Jules. 2026. <span>“Making Systems Visible (Fictional\nDemonstration).”</span> <em>Imaginary Proceedings of Design\nInquiry</em>.\n</div>\n<div id=\"ref-colqyElian2024\" class=\"csl-entry\" role=\"listitem\">\nElian, Noor. 2024. <em>Material Interactions: A Practice Reader\n(Fictional Demonstration)</em>. Colqy Demonstration Press.\n</div>\n<div id=\"ref-colqyVale2025\" class=\"csl-entry\" role=\"listitem\">\nVale, Mira. 2025. <span>“Situated Evidence and Creative Inquiry\n(Fictional Demonstration).”</span> <em>Journal of Imagined Design\nResearch</em>.\n</div>\n</div>",
+    "replacements": [
+      {
+        "html": "<span class=\"citation\" data-cites=\"colqyVale2025\">(<a\nhref=\"#ref-colqyVale2025\" role=\"doc-biblioref\">Vale 2025</a>)</span>",
+        "pattern": "\\[\\s*@colqyVale2025\\s*\\]",
+        "raw": "[@colqyVale2025]"
+      },
+      {
+        "html": "<span class=\"citation\"\ndata-cites=\"colqyVale2025 colqyElian2024\">(<a href=\"#ref-colqyVale2025\"\nrole=\"doc-biblioref\">Vale 2025</a>; <a href=\"#ref-colqyElian2024\"\nrole=\"doc-biblioref\">Elian 2024</a>)</span>",
+        "pattern": "\\[\\s*@colqyVale2025\\s*[,;]\\s*@?colqyElian2024\\s*\\]",
+        "raw": "[@colqyVale2025; @colqyElian2024]"
+      },
+      {
+        "html": "<span class=\"citation\" data-cites=\"colqyAster2026\">(<a\nhref=\"#ref-colqyAster2026\" role=\"doc-biblioref\">Aster\n2026</a>)</span>",
+        "pattern": "\\[\\s*@colqyAster2026\\s*\\]",
+        "raw": "[@colqyAster2026]"
+      }
+    ],
+    "style": "pandoc-default"
+  }
+}

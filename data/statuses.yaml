@@ -1,0 +1,3 @@
+# Modular statuses. Nothing is globally displayed by default.
+shared: {}
+global: []

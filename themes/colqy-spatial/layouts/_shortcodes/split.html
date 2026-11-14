@@ -1,0 +1,13 @@
+{{ $path := .Get "src" | default "" }}
+{{ if not $path }}{{ errorf "split requires src: %s" .Position }}{{ end }}
+{{ $side := .Get "side" | default "left" }}
+{{ if not (in (slice "left" "right") $side) }}{{ errorf "split side must be left or right: %s" .Position }}{{ end }}
+{{ $src := $path }}
+{{ with .Page.Resources.GetMatch $path }}{{ $src = .RelPermalink }}{{ end }}
+<section class="cq-split cq-split--{{ $side }}">
+  <figure class="cq-split__media">
+    <img src="{{ $src | safeURL }}" alt="{{ .Get "alt" | default "" }}" loading="lazy" decoding="async">
+    {{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  </figure>
+  <div class="cq-split__body">{{ .Page.RenderString .Inner }}</div>
+</section>

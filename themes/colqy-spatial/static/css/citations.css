@@ -1,0 +1,16 @@
+/* Colqy A6.3r.3: CSL citations and bibliography in the supporting region. */
+.cq-prose .citation { font-variant-numeric: lining-nums; }
+.cq-prose .citation a { text-decoration-thickness: 1px; text-underline-offset: .15em; }
+.cq-bibliography { margin-block: 1.1rem; }
+.cq-bibliography .cq-support-meta { margin: 0 0 .65rem; }
+.cq-reference-list { font-size: .84em; line-height: 1.52; overflow-wrap: anywhere; }
+.cq-reference-list .references { display: grid; gap: .65rem; }
+.cq-reference-list .csl-entry { margin: 0; }
+.cq-reference-list .csl-left-margin { display: inline-block; min-width: 1.8em; }
+.cq-reference-list .csl-right-inline { display: inline; }
+.cq-reference-list a { text-decoration: underline; text-underline-offset: .15em; }
+.cq-reference-list :target { outline: 1px solid currentColor; outline-offset: 3px; }
+@media (max-width: 800px) {
+  .cq-bibliography { margin-block: .75rem; }
+  .cq-reference-list { font-size: .9em; }
+}

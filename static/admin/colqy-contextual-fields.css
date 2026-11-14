@@ -1,0 +1,12 @@
+/* Colqy A6.4a.2 — non-destructive contextual fields. */
+[data-colqy-context-hidden="true"] { display: none !important; }
+.cq-context-note {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: .85em;
+  line-height: 1.5;
+}

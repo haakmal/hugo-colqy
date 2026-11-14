@@ -1,0 +1,33 @@
+{{- $book := .book -}}
+{{- $current := .current -}}
+{{- $chapters := where $book.RegularPages "Params.book_chapter" true -}}
+{{- $chapters = $chapters.ByWeight -}}
+<nav class="cq-toc cq-book-tree" aria-label="Book table of contents">
+  {{ $display := (site.Data.theme | default dict).display | default dict }}{{ if ne $display.book_toc_label false }}<div class="cq-support-meta">BOOK / CONTENTS</div>{{ end }}
+  <a class="cq-book-tree-root" href="{{ $book.RelPermalink }}" {{ if eq $current.RelPermalink $book.RelPermalink }}aria-current="page"{{ end }}>{{ $book.Title }}</a>
+  <ol class="cq-book-tree-chapters">
+    {{- range $i, $chapter := $chapters -}}
+      {{- $isCurrent := eq $chapter.RelPermalink $current.RelPermalink -}}
+      <li class="cq-book-tree-chapter{{ if $isCurrent }} is-current{{ end }}">
+        <a href="{{ $chapter.RelPermalink }}" {{ if $isCurrent }}aria-current="page"{{ end }}>
+          <span class="cq-book-tree-number">{{ printf "%02d" (add $i 1) }}</span>
+          <span>{{ $chapter.LinkTitle }}</span>
+        </a>
+        {{- if $isCurrent -}}
+          {{- $headingItems := findRE "<li" $chapter.TableOfContents -}}
+          {{- if gt (len $headingItems) 0 -}}
+            <div class="cq-book-tree-headings" aria-label="Headings in this chapter">
+              {{ $chapter.TableOfContents }}
+            </div>
+          {{- end -}}
+        {{- end -}}
+      </li>
+    {{- else -}}
+      <li class="cq-book-tree-empty">No chapters yet.</li>
+    {{- end -}}
+  </ol>
+  {{- with $book.Params.pdf -}}
+    {{- $pdf := $book.Resources.GetMatch . -}}
+    {{- with $pdf -}}<p><a href="{{ .RelPermalink }}" download>Download complete document (PDF)</a></p>{{- end -}}
+  {{- end -}}
+</nav>

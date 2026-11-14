@@ -1,0 +1,19 @@
+{{- /* A6.3r.4: match citation clusters despite spacing changes in Sveltia/Goldmark. */ -}}
+{{- $rendered := printf "%s" .Content -}}
+{{- with .File -}}
+  {{- $entry := index (site.Data.citation_cache | default dict) .Path -}}
+  {{- with $entry -}}
+    {{- range .replacements -}}
+      {{- $item := . -}}
+      {{- $replacement := .html -}}
+      {{- with .pattern -}}
+        {{- range (findRE . $rendered) -}}
+          {{- $rendered = replace $rendered . $replacement -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $rendered = replace $rendered $item.raw $replacement -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $rendered | safeHTML -}}

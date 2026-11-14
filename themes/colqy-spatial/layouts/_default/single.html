@@ -1,0 +1,18 @@
+{{ define "main" }}
+<article class="cq-document cq-page" data-document="{{ .Params.content_type | default "page" }}">
+  {{ partial "document-head.html" . }}
+  <div class="cq-prose" id="cq-article-body">{{ partial "citation-content.html" . }}</div>
+</article>
+{{ end }}
+{{ define "support" }}
+  {{ partial "source-side.html" . }}
+  {{ $kind := .Params.content_type | default "page" }}
+  {{ $display := (site.Data.theme | default dict).display | default dict }}
+  {{ if in (slice "page" "project") $kind }}
+    {{ with .Params.supporting_content }}
+      <div class="cq-support-document">{{ if ne $display.supporting_eyebrow false }}<div class="cq-support-meta">SUPPORTING / MATERIAL</div>{{ end }}<div class="cq-support-prose">{{ . | markdownify }}</div></div>
+    {{ end }}
+  {{ end }}
+  {{ partial "citation-bibliography.html" . }}
+  <div id="cq-footnote-slot"></div>
+{{ end }}

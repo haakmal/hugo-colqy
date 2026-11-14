@@ -1,0 +1,11 @@
+{{- /* GitHub-style alerts, preserving ordinary Markdown blockquotes. Requires Hugo 0.132+. */ -}}
+{{- $supported := slice "note" "tip" "important" "warning" "caution" -}}
+{{- if and (eq .Type "alert") (in $supported .AlertType) -}}
+  {{- $kind := .AlertType -}}
+  <blockquote class="cq-callout cq-callout--{{ $kind }}">
+    <p class="cq-callout__heading">{{ with .AlertTitle }}{{ . }}{{ else }}{{ title $kind }}{{ end }}</p>
+    <div class="cq-callout__content">{{ .Text }}</div>
+  </blockquote>
+{{- else -}}
+  <blockquote>{{ .Text }}</blockquote>
+{{- end -}}

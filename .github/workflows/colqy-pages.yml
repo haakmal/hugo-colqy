@@ -1,0 +1,74 @@
+name: Colqy — GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: colqy-pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate release configuration
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Colqy publishing prerequisites
+        run: python3 tools/check-deployment-a6-4b1.py --ci
+
+  publish:
+    name: Build and publish site
+    needs: validate
+    if: ${{ vars.COLQY_PUBLISH == 'true' }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.150.0'
+          extended: true
+      - name: Pandoc and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          python3 -m pip install 'PyYAML>=6.0,<7.0'
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build Colqy with citations and reference index
+        env:
+          COLQY_BASE_URL: ${{ vars.COLQY_BASE_URL || steps.pages.outputs.base_url }}
+        run: |
+          python3 tools/build-colqy.py --preflight
+          python3 tools/build-colqy.py --build --base-url "$COLQY_BASE_URL"
+          test -f public/index.html
+          test -f public/admin/index.html
+          test -f public/admin/references-index.json
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,6 @@
+{{ define "main" }}
+<section class="cq-document cq-listing">
+  {{ partial "document-head.html" . }}
+  {{ partial "entries.html" (dict "pages" .Pages "view" "list") }}
+</section>
+{{ end }}

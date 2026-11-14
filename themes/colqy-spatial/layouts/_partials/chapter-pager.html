@@ -1,0 +1,25 @@
+{{- $book := .book -}}
+{{- $current := .current -}}
+{{- $position := .position | default "support" -}}
+{{- $chapters := where $book.RegularPages "Params.book_chapter" true -}}
+{{- $chapters = $chapters.ByWeight -}}
+{{- $previous := $book -}}
+{{- $next := false -}}
+{{- range $i, $chapter := $chapters -}}
+  {{- if eq $chapter.RelPermalink $current.RelPermalink -}}
+    {{- if gt $i 0 -}}{{- $previous = index $chapters (sub $i 1) -}}{{- end -}}
+    {{- if lt (add $i 1) (len $chapters) -}}{{- $next = index $chapters (add $i 1) -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+<nav class="cq-chapter-pager cq-chapter-pager--{{ $position }}" aria-label="Previous and next chapters">
+  <a class="cq-pager-card cq-pager-card--previous" rel="prev" href="{{ $previous.RelPermalink }}">
+    <span class="cq-pager-label">← Previous</span>
+    <span class="cq-pager-title">{{ $previous.LinkTitle }}</span>
+  </a>
+  {{- with $next -}}
+    <a class="cq-pager-card cq-pager-card--next" rel="next" href="{{ .RelPermalink }}">
+      <span class="cq-pager-label">Next →</span>
+      <span class="cq-pager-title">{{ .LinkTitle }}</span>
+    </a>
+  {{- end -}}
+</nav>

@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ $siteContent := site.Data.site_content | default dict }}
+{{ $home := $siteContent.home | default dict }}
+{{ $theme := site.Data.theme | default dict }}
+{{ $display := $theme.display | default dict }}
+<article class="cq-document cq-home">
+  {{ if ne $display.overline false }}<div class="cq-overline">{{ $home.overline | default "OPEN PUBLISHING / COLQY" }}</div>{{ end }}
+  {{ with .Content }}<div class="cq-prose">{{ . }}</div>
+  {{ else }}
+    {{ $title := $.Title }}
+    {{ if or (not $title) (eq $title "Home") }}{{ $title = $home.fallback_title | default site.Title }}{{ end }}
+    <h1>{{ $title }}</h1>
+    {{ with site.Params.introduction }}<p class="cq-lead">{{ . }}</p>{{ end }}
+  {{ end }}
+  <div class="cq-section-heading">{{ $home.featured_heading | default "Featured work" }}</div>
+  {{ with site.GetPage "/sources" }}
+    {{ $featured := where .Pages "Params.featured" true }}
+    {{ partial "entries.html" (dict "pages" $featured.ByWeight "view" "list") }}
+  {{ end }}
+</article>
+{{ end }}

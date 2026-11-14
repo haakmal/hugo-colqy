@@ -1,0 +1,35 @@
+/* A6.3f - semantic status styles for the supporting region and announcements. */
+.cq-support-document .cq-status,.cq-document .cq-status{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;max-width:100%;box-sizing:border-box;margin:10px 0;padding:12px 14px;border:1px solid var(--cq-status-border,#bbb);border-left:3px solid var(--cq-status-accent,#666);background:var(--cq-status-bg,#f2f2f2);color:var(--cq-status-fg,#222);font-size:12px;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+.cq-status{--cq-status-bg:#f2f2f2;--cq-status-fg:#222;--cq-status-border:#bbb;--cq-status-accent:#555}
+.cq-status[data-appearance="positive"]{--cq-status-bg:#e9f3eb;--cq-status-fg:#1d5230;--cq-status-border:#94b89b;--cq-status-accent:#27633b}
+.cq-status[data-appearance="caution"]{--cq-status-bg:#fff2dd;--cq-status-fg:#6b4510;--cq-status-border:#d6b277;--cq-status-accent:#8b5a13}
+.cq-status[data-appearance="critical"]{--cq-status-bg:#fae9e9;--cq-status-fg:#7d2626;--cq-status-border:#d4a0a0;--cq-status-accent:#982e2e}
+.cq-status strong{display:block;font-size:12px;font-weight:650;line-height:1.4}
+.cq-status span{display:block;font-weight:600;font-size:13px;line-height:1.4}
+.cq-status small{display:block;font-size:11px;line-height:1.45;color:inherit;opacity:.9}
+.cq-extreme-bottom .cq-status{display:flex;flex-direction:row;align-items:center;gap:9px;min-width:0;box-sizing:border-box;margin:0;padding:5px 9px;border:1px solid var(--cq-status-border);border-left:3px solid var(--cq-status-accent);background:var(--cq-status-bg);color:var(--cq-status-fg);font-size:12px;white-space:normal}
+.cq-extreme-bottom .cq-status strong,.cq-extreme-bottom .cq-status span,.cq-extreme-bottom .cq-status small{color:inherit;line-height:1.35}
+@media(max-width:800px){.cq-extreme-bottom .cq-status{padding:4px 7px;gap:6px}.cq-extreme-bottom .cq-status small{display:none}}
+
+/* A6.3r.1 — global announcements use one continuous semantic rail. */
+.cq-extreme-bottom { background:#151515; color:#fff; }
+.cq-extreme-bottom[data-appearance="positive"] { background:#20583d; color:#fff; }
+.cq-extreme-bottom[data-appearance="caution"] { background:#e5b844; color:#231b06; }
+.cq-extreme-bottom[data-appearance="critical"] { background:#a52e38; color:#fff; }
+.cq-extreme-bottom .cq-status {
+  display:inline-flex; flex:0 0 auto; align-items:center; gap:8px;
+  margin:0; padding:0; border:0; border-radius:0;
+  background:transparent; color:inherit; font-size:11px; white-space:nowrap;
+}
+.cq-extreme-bottom .cq-status + .cq-status {
+  margin-left:12px; padding-left:12px; border-left:1px solid currentColor;
+}
+.cq-extreme-bottom .cq-status strong,
+.cq-extreme-bottom .cq-status span,
+.cq-extreme-bottom .cq-status small { color:inherit; font-size:inherit; }
+.cq-extreme-bottom { overflow-x:auto; scrollbar-width:none; }
+.cq-extreme-bottom::-webkit-scrollbar { display:none; }
+@media (max-width:800px) {
+  .cq-extreme-bottom .cq-status small { display:none; }
+  .cq-extreme-bottom .cq-status { font-size:10px; }
+}

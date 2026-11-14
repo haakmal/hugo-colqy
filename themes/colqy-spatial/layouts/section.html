@@ -1,0 +1,12 @@
+{{ define "main" }}
+<section class="cq-document cq-listing">
+  {{ partial "document-head.html" . }}
+  {{ with .Content }}<div class="cq-prose">{{ . }}</div>{{ end }}
+  <div class="cq-section-heading">All entries</div>
+  {{ $pages := slice }}
+  {{ range .Pages }}
+    {{ if not .Params.utility_page }}{{ $pages = append . $pages }}{{ end }}
+  {{ end }}
+  {{ partial "entries.html" (dict "pages" $pages "view" "list") }}
+</section>
+{{ end }}

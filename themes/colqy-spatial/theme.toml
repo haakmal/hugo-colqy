@@ -1,0 +1,4 @@
+name = "Colqy Spatial"
+license = "MIT"
+description = "Spatial editorial interface for Colqy"
+min_version = "0.125.0"

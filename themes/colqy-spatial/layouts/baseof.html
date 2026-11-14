@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="{{ site.Language.LanguageCode | default "en" }}">
+<head>{{ partial "head.html" . }}</head>
+{{- $theme := site.Data.theme | default dict -}}
+{{- $siteContent := site.Data.site_content | default dict -}}
+{{- $headerContent := $siteContent.header | default dict -}}
+{{- $shell := $theme.shell | default dict -}}
+{{- $rail := $shell.controls | default "right" -}}
+{{- if not (in (slice "left" "right") $rail) -}}{{- $rail = "right" -}}{{- end -}}
+{{- $sticky := $shell.header_sticky | default false -}}
+{{- $left := $shell.left_percent | default 56 -}}
+{{- $right := $shell.right_percent | default 44 -}}
+{{- $announcements := site.Data.global_statuses.statuses | default (slice) -}}
+{{- $hasAnnouncements := gt (len $announcements) 0 -}}
+{{- $kind := .Params.content_type | default "page" -}}
+{{- if .IsHome -}}{{- $kind = "home" -}}{{- end -}}
+{{- if eq .Section "indexes" -}}{{- $kind = "index" -}}{{- end -}}
+{{- $mobileSettings := $theme.mobile | default dict -}}
+{{- $mode := $mobileSettings.supporting | default "panel" -}}
+{{- with .Params.presentation -}}{{- with .mobile -}}{{- $mode = . -}}{{- end -}}{{- end -}}
+{{- if not (in (slice "panel" "inline") $mode) -}}{{- $mode = "inline" -}}{{- end -}}
+{{- $motion := $theme.motion | default dict -}}
+<body data-motion="{{ ne $motion.enabled false }}">
+<div class="cq-app" id="cq-app" data-rail="{{ $rail }}" data-header-sticky="{{ $sticky }}" data-header-hidden="false" data-announcement="{{ $hasAnnouncements }}" data-kind="{{ $kind }}" style="--left-share:{{ $left }}fr;--right-share:{{ $right }}fr">
+  <a class="skip-link" href="#cq-primary">Skip to main content</a>
+  <header class="cq-extreme-top" id="cq-header">
+    <a class="cq-site-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    {{ $tagline := site.Params.siteSubtitle }}{{ if isset $headerContent "tagline" }}{{ $tagline = $headerContent.tagline }}{{ end }}{{ with $tagline }}<span class="cq-site-subtitle">{{ . }}</span>{{ end }}
+    <span class="cq-header-context">{{ if .IsHome }}Home{{ else }}{{ .Title }}{{ end }}</span>
+  </header>
+  <div class="cq-workspace" id="cq-workspace">
+    <main class="cq-region cq-primary" id="cq-primary" tabindex="-1" aria-label="Primary content">
+      {{ block "main" . }}{{ end }}
+    </main>
+    <aside class="cq-region cq-secondary" id="cq-secondary" data-mobile-mode="{{ $mode }}" aria-label="Supporting content">
+      <div id="cq-support-content">{{ block "support" . }}{{ end }}</div>
+    </aside>
+    <nav class="cq-rail" aria-label="Site controls">
+      <div class="cq-rail-group">
+        <button class="cq-rail-button" type="button" data-panel-open="navigation" aria-label="Open site navigation" aria-haspopup="dialog" aria-expanded="false" title="Navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button class="cq-rail-button" id="cq-context-button" type="button" data-panel-open="context" aria-label="Open supporting content" aria-haspopup="dialog" aria-expanded="false" title="Supporting content" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM11 5v14M14 9h4M14 12h4M14 15h3"/></svg></button>
+        <button class="cq-rail-button" id="cq-status-button" type="button" data-panel-open="context" data-panel-focus="cq-source-statuses" aria-label="Open document statuses" aria-haspopup="dialog" aria-expanded="false" title="Document statuses" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4m0 1c4-2 7 2 12 0v10c-5 2-8-2-12 0"/></svg></button>
+        <button class="cq-rail-button" type="button" data-panel-open="information" aria-label="Open site information" aria-haspopup="dialog" aria-expanded="false" title="Information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></button>
+      </div>
+    </nav>
+  </div>
+  {{ if $hasAnnouncements }}
+  <aside class="cq-extreme-bottom" data-appearance="{{ partial "global-status-tone.html" . }}" aria-label="Site announcements">{{ partial "global-statuses.html" . }}</aside>
+  {{ end }}
+</div>
+<div class="cq-overlay" id="cq-overlay" hidden data-panel="navigation">
+  <button class="cq-scrim" type="button" id="cq-scrim" tabindex="-1" aria-label="Close panel"></button>
+  <section class="cq-panel" id="cq-panel" role="dialog" aria-modal="true" aria-label="Navigation" tabindex="-1">
+    <div class="cq-panel-head">
+      <button class="cq-close" type="button" id="cq-panel-close" aria-label="Close panel" title="Close panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    </div>
+    <div class="cq-panel-body" id="cq-panel-body"></div>
+  </section>
+</div>
+<template id="cq-navigation-template">{{ partial "navigation.html" . }}</template>
+<template id="cq-information-template">{{ partial "information.html" . }}</template>
+</body>
+</html>

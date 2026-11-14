@@ -1,0 +1,3 @@
+# Colqy A6.3r.3: Pandoc's built-in CSL style is used unless overridden.
+# Optional: put a .csl file in assets/csl/ and set default_style to its filename.
+default_style: pandoc-default

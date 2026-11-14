@@ -1,0 +1,23 @@
+{{- $p := .page -}}
+{{- $view := .view | default "list" -}}
+{{- $thumb := $p.Params.thumbnail | default ($p.Params.featured_image | default ($p.Params.image | default "")) -}}
+{{- $src := "" -}}
+{{- with $thumb -}}
+  {{- $src = . -}}
+  {{- with $p.Resources.GetMatch . -}}{{- $src = .RelPermalink -}}{{- end -}}
+{{- end -}}
+<article class="cq-entry cq-index-card cq-index-card--{{ $view }}">
+  {{- if and (in (slice "grid" "gallery") $view) $src -}}
+    <a class="cq-index-card-media" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ $src | safeURL }}" alt="{{ $p.Params.thumbnail_alt | default "" }}" loading="lazy" decoding="async">
+    </a>
+  {{- end -}}
+  <div class="cq-index-card-copy">
+    <div class="cq-entry-meta">
+      {{- with $p.Params.date -}}{{ $p.Date.Format "2006-01-02" }} / {{- end -}}
+      {{ $p.Params.content_type | default "page" }}
+    </div>
+    <h2><a href="{{ $p.RelPermalink }}">{{ $p.LinkTitle }}</a></h2>
+    {{- with $p.Description -}}<p>{{ . }}</p>{{- end -}}
+  </div>
+</article>

@@ -1,0 +1,10 @@
+{{ $path := .Get "src" | default "" }}
+{{ if not $path }}{{ errorf "gallery-item requires src: %s" .Position }}{{ end }}
+{{ $src := $path }}
+{{ with .Page.Resources.GetMatch $path }}{{ $src = .RelPermalink }}{{ end }}
+<figure class="cq-gallery__item">
+  <button class="cq-gallery__zoom" type="button" aria-label="Enlarge image: {{ .Get "alt" | default "Gallery image" }}" title="Enlarge image">
+    <img src="{{ $src | safeURL }}" alt="{{ .Get "alt" | default "" }}" loading="lazy" decoding="async">
+  </button>
+  {{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

@@ -1,0 +1,54 @@
+/* Colqy A6.4a.4 — shared, scoped Sveltia content-component previews.
+   No global Sveltia selectors or undocumented CMS DOM assumptions. */
+.cq-editor-preview {
+  --cq-preview-rule: color-mix(in srgb, currentColor 30%, transparent);
+  --cq-preview-soft: color-mix(in srgb, currentColor 9%, transparent);
+  box-sizing: border-box;
+  min-width: 0;
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid var(--cq-preview-rule);
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  line-height: 1.45;
+}
+.cq-editor-preview :is(strong, small, figcaption) { color: inherit; }
+.cq-editor-preview strong { font-size: 13px; font-weight: 650; }
+.cq-editor-preview small,
+.cq-editor-preview figcaption { font-size: 12px; line-height: 1.45; overflow-wrap: anywhere; }
+.cq-editor-preview-image { display: block; width: 100%; height: auto; max-height: 160px; object-fit: contain; }
+.cq-editor-split-preview {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+}
+.cq-editor-split-preview > :is(figure, div) { min-width: 0; }
+.cq-editor-split-preview figure { margin: 0; }
+.cq-editor-split-preview figure img { display: block; width: 100%; height: auto; }
+.cq-editor-split-copy { min-width: 0; overflow-wrap: anywhere; }
+.cq-editor-split-copy > :first-child { margin-top: 0; }
+.cq-editor-split-copy > :last-child { margin-bottom: 0; }
+.cq-editor-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cq-preview-columns, 2), minmax(0, 1fr));
+  gap: 8px;
+}
+.cq-editor-gallery-item {
+  min-width: 0;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--cq-preview-rule);
+  background: var(--cq-preview-soft);
+}
+.cq-editor-gallery-item img { display: block; width: 100%; height: 100px; object-fit: contain; }
+.cq-editor-gallery-item figcaption { padding-top: 5px; }
+@media (max-width: 600px) {
+  .cq-editor-split-preview { grid-template-columns: 1fr; }
+  .cq-editor-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cq-editor-preview, .cq-editor-preview * { animation: none !important; transition: none !important; }
+}

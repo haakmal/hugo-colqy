@@ -1,0 +1,10 @@
+/public/
+/resources/
+.hugo_build.lock
+.DS_Store
+*.swp
+__pycache__/
+*.pyc
+/.venv/
+/.hugo_build.lock
+/resources/_gen/

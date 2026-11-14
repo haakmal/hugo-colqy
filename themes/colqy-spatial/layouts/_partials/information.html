@@ -1,0 +1,9 @@
+{{ $siteContent := site.Data.site_content | default dict }}
+{{ $footer := $siteContent.footer | default dict }}
+<div class="cq-info">
+  <strong class="cq-info-title">{{ site.Title }}</strong>
+  {{ with site.Params.introduction }}<p>{{ . }}</p>{{ end }}
+  <dl><dt>Publishing</dt><dd>Colqy / Hugo</dd><dt>Copyright</dt><dd>© {{ now.Year }} {{ site.Title }}</dd></dl>
+  {{ with site.Params.contactEmail }}<p><a href="mailto:{{ . }}">{{ $footer.contact_label | default "Contact" }}</a></p>{{ end }}
+  {{ $note := site.Params.footerNote }}{{ if isset $footer "note" }}{{ $note = $footer.note }}{{ end }}{{ with $note }}<p class="cq-note">{{ . }}</p>{{ end }}
+</div>

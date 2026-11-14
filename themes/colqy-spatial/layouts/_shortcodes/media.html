@@ -1,0 +1,24 @@
+{{ $kind := .Get "kind" | default "" }}
+{{ if not (in (slice "audio" "video") $kind) }}{{ errorf "media kind must be audio or video: %s" .Position }}{{ end }}
+{{ $path := .Get "src" | default "" }}
+{{ if not $path }}{{ errorf "media requires src: %s" .Position }}{{ end }}
+{{ $src := $path }}
+{{ with .Page.Resources.GetMatch $path }}{{ $src = .RelPermalink }}{{ end }}
+{{ $title := .Get "title" | default "Media recording" }}
+{{ $posterPath := .Get "poster" | default "" }}
+{{ $poster := $posterPath }}
+{{ if $posterPath }}{{ with .Page.Resources.GetMatch $posterPath }}{{ $poster = .RelPermalink }}{{ end }}{{ end }}
+<figure class="cq-media cq-media--{{ $kind }}">
+{{ if eq $kind "audio" }}
+  <audio controls preload="none" aria-label="{{ $title }}">
+    <source src="{{ $src | safeURL }}">
+    <a href="{{ $src | safeURL }}">Download audio</a>
+  </audio>
+{{ else }}
+  <video controls preload="metadata" playsinline aria-label="{{ $title }}" {{ with $poster }}poster="{{ . | safeURL }}"{{ end }}>
+    <source src="{{ $src | safeURL }}">
+    <a href="{{ $src | safeURL }}">Download video</a>
+  </video>
+{{ end }}
+{{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ $book := .Parent }}
+<article class="cq-document cq-chapter" itemscope itemtype="https://schema.org/Chapter">
+  <a class="cq-back" href="{{ $book.RelPermalink }}">← {{ $book.Title }}</a>
+  {{ partial "document-head.html" . }}
+  <div class="cq-prose" id="cq-article-body">{{ partial "citation-content.html" . }}</div>
+  {{ partial "chapter-pager.html" (dict "book" $book "current" . "position" "mobile") }}
+</article>
+{{ end }}
+{{ define "support" }}
+  <div class="cq-support-document">
+    {{ partial "book-toc.html" (dict "book" .Parent "current" .) }}
+    {{ partial "chapter-pager.html" (dict "book" .Parent "current" . "position" "support") }}
+    {{ partial "citation-bibliography.html" . }}
+  <div id="cq-footnote-slot"></div>
+  </div>
+{{ end }}

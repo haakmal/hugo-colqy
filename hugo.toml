@@ -1,0 +1,25 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-au'
+title = 'Mira Vale'
+theme = 'colqy-spatial'
+enableRobotsTXT = true
+summaryLength = 28
+
+[params]
+  siteSubtitle = 'Research, teaching and creative practice'
+  introduction = 'A fictional academic portfolio demonstrating Colqy.'
+  footerNote = 'A fictional academic practice built with Colqy.'
+  contactEmail = 'mira.vale@example.org' # Add an address to display a mailto contact link.
+
+[taxonomies]
+  tag = 'tags'
+  collection = 'collections'
+
+[permalinks]
+  [permalinks.page]
+    sources = '/work/:slug/'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false

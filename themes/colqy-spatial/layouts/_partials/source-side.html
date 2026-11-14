@@ -1,0 +1,26 @@
+{{- /* Supporting metadata for Page, Project and Article. */ -}}
+{{- $display := (site.Data.theme | default dict).display | default dict -}}
+{{- $statuses := .Params.statuses | default (slice) -}}
+{{- $hasCollections := and (ne $display.collections false) (gt (len (.Params.collections | default (slice))) 0) -}}
+{{- $hasTags := and (ne $display.tags false) (gt (len (.Params.tags | default (slice))) 0) -}}
+{{- if or (gt (len $statuses) 0) $hasCollections $hasTags -}}
+<div class="cq-support-document cq-source-metadata" aria-label="Document information">
+  {{- if gt (len $statuses) 0 -}}
+  <section id="cq-source-statuses" class="cq-support-statuses" aria-label="Document statuses">
+    {{ partial "status-notice.html" . }}
+  </section>
+  {{- end -}}
+  {{- if $hasCollections -}}
+  <section aria-label="Collections">
+    <div class="cq-support-meta">COLLECTIONS</div>
+    <div class="cq-tags">{{ range .Params.collections }}<span>{{ . }}</span>{{ end }}</div>
+  </section>
+  {{- end -}}
+  {{- if $hasTags -}}
+  <section aria-label="Tags">
+    <div class="cq-support-meta">TAGS</div>
+    <div class="cq-tags">{{ range .Params.tags }}<span>{{ . }}</span>{{ end }}</div>
+  </section>
+  {{- end -}}
+</div>
+{{- end -}}
