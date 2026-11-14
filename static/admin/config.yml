@@ -2,7 +2,7 @@
 # Replace this with your own GitHub fork. Never put secrets in this public file.
 backend:
   name: github
-  repo: YOUR_ACCOUNT/YOUR_REPOSITORY
+  repo: haakmal/hugo-colqy
   branch: main
 
 # Default media storage
