@@ -21,7 +21,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check Colqy publishing prerequisites
+      - name: Install validation dependency
+        run: python3 -m pip install 'PyYAML>=6.0,<7.0'
+      - name: Check portable Colqy source
         run: python3 tools/check-deployment-a6-4b1.py --ci
 
   publish:
@@ -65,6 +67,10 @@ jobs:
           test -f public/index.html
           test -f public/admin/index.html
           test -f public/admin/references-index.json
+      - name: Bind Sveltia to this GitHub repository
+        run: |
+          python3 tools/bind-cms-repository.py --site public --apply
+          python3 tools/bind-cms-repository.py --site public --check
       - name: Upload static site
         uses: actions/upload-pages-artifact@v4
         with:

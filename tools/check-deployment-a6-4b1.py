@@ -1,54 +1,51 @@
 #!/usr/bin/env python3
-"""Read-only structural preflight for the GitHub Pages default.
+"""Read-only Colqy deployment preflight. Neutral source config is expected.
 
-Does not deploy, publish, or modify repository files. Checks only structure;
-GitHub Pages settings, account permissions and browser CMS login are manual.
+Generated admin/config.yml is separately bound and validated after Hugo builds.
 """
 from pathlib import Path
 import argparse
-import os
-import re
+import json
 import sys
 
 REQUIRED = (
     'hugo.toml', 'static/admin/index.html', 'static/admin/config.yml',
     'themes/colqy-spatial/layouts', 'tools/build-colqy.py',
     'tools/build-colqy-a6-3r6.py', 'tools/build-citations-a6-3r3.py',
-    'tools/sync-reference-index-a6-3r2.py', 'data/references.json',
-    '.github/workflows/colqy-pages.yml',
+    'tools/sync-reference-index-a6-3r2.py', 'tools/bind-cms-repository.py',
+    'data/references.json', '.github/workflows/colqy-pages.yml',
 )
+PLACEHOLDER = 'YOUR_ACCOUNT/YOUR_REPOSITORY'
+
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ci', action='store_true', help='CI mode; same read-only checks')
-    args = parser.parse_args()
+    parser.add_argument('--ci', action='store_true', help='Validate a portable source tree in CI')
+    parser.parse_args()
     missing = [p for p in REQUIRED if not Path(p).exists()]
-    for p in missing:
-        print('ERROR missing:', p)
+    for path in missing:
+        print('ERROR missing:', path)
     if missing:
         sys.exit(1)
     try:
-        import json
+        import yaml
+        config = yaml.safe_load(Path('static/admin/config.yml').read_text(encoding='utf-8'))
+        backend = config.get('backend') if isinstance(config, dict) else None
+        if not isinstance(backend, dict) or backend.get('name') != 'github' or backend.get('repo') != PLACEHOLDER:
+            raise ValueError('static/admin/config.yml must use the neutral YOUR_ACCOUNT/YOUR_REPOSITORY placeholder; the generated file is bound during deployment.')
         refs = json.loads(Path('data/references.json').read_text(encoding='utf-8'))
         if not isinstance(refs, list):
-            raise ValueError('expected CSL JSON array')
+            raise ValueError('references.json must be a CSL JSON array')
         keys = [r.get('id') for r in refs if isinstance(r, dict)]
         if len(keys) != len(refs) or any(not isinstance(k, str) or not k for k in keys) or len(set(keys)) != len(keys):
-            raise ValueError('missing or duplicated citation IDs')
-    except (ValueError, OSError) as exc:
-        sys.exit('ERROR references.json: ' + str(exc))
+            raise ValueError('Missing or duplicate citation IDs')
+    except (ValueError, OSError, ImportError) as exc:
+        sys.exit('ERROR configuration: ' + str(exc))
     if '/admin/' in Path('static/admin/index.html').read_text(encoding='utf-8'):
         sys.exit('ERROR admin/index.html uses root-absolute /admin/ paths; GitHub Pages project URLs will fail')
-    repository = os.environ.get('GITHUB_REPOSITORY') if args.ci else None
-    if repository:
-        config = Path('static/admin/config.yml').read_text(encoding='utf-8')
-        match = re.search(r'(?m)^\s{2}repo:\s*([^#\s]+)', config)
-        if not match or match.group(1).strip("'\"").lower() != repository.lower():
-            sys.exit('ERROR Sveltia backend.repo must match this GitHub repository: '+repository)
-    print('PASS: Colqy publishing file structure, CMS asset paths and reference IDs.')
-    print('NOTE: CI preflight does not enable GitHub Pages or verify CMS authentication.')
-    if not args.ci:
-        print('NOTE: Before publishing, review public content and set repository variable COLQY_PUBLISH=true.')
+    print('PASS: Colqy source is portable, reference IDs are valid, and generated CMS binding is available.')
+    print('NOTE: Publishing requires COLQY_PUBLISH=true and GitHub Pages enabled. This does not verify CMS login.')
+
 
 if __name__ == '__main__':
     main()
