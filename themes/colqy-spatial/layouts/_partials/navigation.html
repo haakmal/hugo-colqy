@@ -1,17 +1,45 @@
+
 <nav class="cq-nav-links" aria-label="Site navigation">
 {{ $links := site.Data.navigation.main | default (slice) }}
+
 {{ range $links }}
   {{ if ne .enabled false }}
     {{ $target := .url | default "" }}
+
     {{ if $target }}
-      {{ $external := or (hasPrefix $target "https://") (hasPrefix $target "http://") (hasPrefix $target "mailto:") }}
+      {{ $external := or
+        (hasPrefix $target "https://")
+        (hasPrefix $target "http://")
+        (hasPrefix $target "mailto:")
+        (hasPrefix $target "tel:")
+      }}
+
       {{ $href := $target }}
-      {{ if not $external }}{{ $href = $target | relURL }}{{ end }}
-      <a href="{{ $href | safeURL }}" {{ if and (not $external) (eq $.RelPermalink $href) }}aria-current="page"{{ end }}>{{ .label }}</a>
+
+      {{ if not $external }}
+        {{ if eq $target "/" }}
+          {{ $href = site.Home.RelPermalink }}
+        {{ else if hasPrefix $target "#" }}
+          {{ $href = $target }}
+        {{ else }}
+          {{ $path := strings.TrimPrefix "/" $target }}
+          {{ $href = $path | relURL }}
+        {{ end }}
+      {{ end }}
+
+      <a
+        href="{{ $href | safeURL }}"
+        {{ if and (not $external) (eq $.RelPermalink $href) }}
+          aria-current="page"
+        {{ end }}
+      >{{ .label }}</a>
     {{ end }}
   {{ end }}
+
 {{ else }}
   <a href="{{ site.Home.RelPermalink }}">Home</a>
-  {{ with site.GetPage "/sources" }}<a href="{{ .RelPermalink }}">Work</a>{{ end }}
+  {{ with site.GetPage "/sources" }}
+    <a href="{{ .RelPermalink }}">Work</a>
+  {{ end }}
 {{ end }}
 </nav>
