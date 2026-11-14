@@ -1,8 +1,20 @@
 # Development and testing
 
-## Prerequisites
+## Prerequisites and installation
 
-Python 3.12+, Hugo Extended, Pandoc with citeproc and PyYAML. `bibtexparser` is optional for the CLI importer. Use the repository's GitHub Actions workflow as the reference for CI dependencies.
+For **copyable Fedora, Ubuntu, macOS and Windows installation commands**, see [Local installation](install.md). It includes Git, Python 3.12+, Hugo Extended, Pandoc with citeproc, version checks, virtual-environment setup and troubleshooting.
+
+For a quick Fedora setup:
+
+```bash
+sudo dnf install -y git python3 python3-pip hugo pandoc
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install 'PyYAML>=6,<7'
+python tools/build-colqy.py --preflight
+```
+
+Run these from the Colqy repository root after installing the system packages. The optional CLI BibTeX importer uses `python -m pip install 'bibtexparser>=1.4,<2'`; Sveltia's browser-based importer does not need it. If Hugo is not Extended or is older than 0.132, use the installation guide to upgrade it.
 
 ## Common commands
 

@@ -33,9 +33,11 @@ For non-technical teams, evaluate the Sveltia CMS Authenticator or a compatible 
 
 Reference: https://sveltiacms.app/en/docs/backends/github
 
-## 3. Local checks
+## 3. Local checks (optional)
 
-From repository root:
+**You can publish through GitHub Actions without installing Hugo, Pandoc or Python locally.** The hosted workflow installs its own dependencies. If you want to test on your computer, first follow the copyable operating-system commands in [Local installation](install.md).
+
+From repository root after installing the dependencies and activating the Python virtual environment:
 
 ```sh
 python3 tools/check-deployment-a6-4b1.py
